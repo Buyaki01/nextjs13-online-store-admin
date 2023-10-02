@@ -1,9 +1,21 @@
+'use client'
+
+import { useSession, signIn, signOut } from "next-auth/react"
+
 export default function Home() {
-  return (
-    <div className="flex items-center w-screen h-screen">
-      <div className="text-center w-full">
-        <button className=" text-white bg-slate-700 p-2 rounded-lg">Login with Google</button>
+  const { data: session } = useSession()
+
+  if (!session) {
+    return (
+      <div className="flex items-center w-screen h-screen">
+        <div className="text-center w-full">
+          <button className=" text-white bg-slate-700 p-2 rounded-lg">Login with Google</button>
+        </div>
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <div>Logged In {session.user.email}</div>
   )
 }
