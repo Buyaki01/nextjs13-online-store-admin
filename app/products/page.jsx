@@ -1,8 +1,9 @@
 'use client'
 
 import { useSession, signIn, signOut } from "next-auth/react"
-import Nav from "../components/Nav"
+
 import Link from "next/link"
+import Nav from "../components/Nav"
 
 export default function Products() {
 

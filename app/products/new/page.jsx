@@ -1,6 +1,7 @@
 'use client'
 
-import Nav from "@/app/components/Nav"
+import Nav from "../../components/Nav"
+import axios from "axios"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useState } from "react"
 
@@ -21,8 +22,13 @@ export default function NewProduct() {
     )
   }
 
-  function createProduct() {
-    
+  async function createProduct(e) {
+
+    e.preventDefault()
+
+    const data = { productName, description, price }
+
+    await axios.post('/api/products', data)
   }
 
   return (
