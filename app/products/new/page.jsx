@@ -1,10 +1,9 @@
 'use client'
 
+import Nav from "@/app/components/Nav"
 import { useSession, signIn, signOut } from "next-auth/react"
-import Nav from "../components/Nav"
-import Link from "next/link"
 
-export default function Products() {
+export default function NewProduct() {
 
   const { data: session } = useSession()
 
@@ -22,7 +21,9 @@ export default function Products() {
     <div className="admin-panel-container min-h-screen flex">
       <Nav />
       <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
-        <Link href={'/products/new'} className="new-product py-1 px-2">Add new product</Link>
+        <div> 
+          Add new product 
+        </div>
       </div>
     </div>
   )
