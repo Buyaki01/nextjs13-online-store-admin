@@ -19,7 +19,20 @@ export default function Home() {
   return (
     <div className="admin-panel-container min-h-screen flex">
       <Nav />
-      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">Logged In {session.user.email}</div>
+      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
+
+        <div className="text-lime-900 flex justify-between">
+          <h2> Hello, <b>{session?.user?.name}</b> </h2>
+
+          <div className="flex bg-slate-300 gap-1 rounded-lg overflow-hidden">
+            <img src={session?.user?.image} alt="" className="w-6 h-6" />
+            <span className="px-2">
+              {session?.user?.name}
+            </span>
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }
