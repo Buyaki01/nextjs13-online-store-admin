@@ -2,10 +2,14 @@
 
 import Nav from "@/app/components/Nav"
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useState } from "react"
 
 export default function NewProduct() {
 
   const { data: session } = useSession()
+  const [productName, setProductName] = useState('')
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState('')
 
   if (!session) {
     return (
@@ -17,13 +21,46 @@ export default function NewProduct() {
     )
   }
 
+  function createProduct() {
+    
+  }
+
   return (
     <div className="admin-panel-container min-h-screen flex">
       <Nav />
       <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
-        <div> 
-          Add new product 
-        </div>
+        <form onSubmit={createProduct}>
+          <h1>New Product</h1>
+          <label>Product name</label>
+          <input 
+            type="text" 
+            placeholder="product name" 
+            value={productName}
+            onChange={e => setProductName(e.target.value)}
+          />
+
+          <label>Description</label>
+          <textarea 
+            placeholder="description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+
+          <label>Price (in USD)</label>
+          <input 
+            type="number" 
+            placeholder="price"
+            value={price}
+            onChange={e => setPrice(e.target.value)}
+          />
+
+          <button 
+            type="submit"
+            className="btn-primary"
+          >
+            Save
+          </button>
+        </form>
       </div>
     </div>
   )
