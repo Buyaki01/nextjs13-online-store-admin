@@ -1,6 +1,8 @@
 'use client'
 
 import { useSession, signIn, signOut } from "next-auth/react"
+
+import Link from "next/link"
 import Nav from "../components/Nav"
 
 export default function Products() {
@@ -20,7 +22,9 @@ export default function Products() {
   return (
     <div className="admin-panel-container min-h-screen flex">
       <Nav />
-      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">Products</div>
+      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
+        <Link href={'/products/new'} className="new-product py-1 px-2">Add new product</Link>
+      </div>
     </div>
   )
 }
