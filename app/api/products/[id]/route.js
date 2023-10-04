@@ -2,14 +2,17 @@ import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
 import { Product } from "../../../../models/product"
 
+export async function GET(request, { params }) {
+  const { id } = params
+  await connectMongoDB()
+  const product = await Product.findOne({ _id: id })
+  
+  return NextResponse.json({ product }, { status: 200 })
+}
+
 export async function PUT(request, { params }) {
 
   const { id } = params
-  
-  console.log("Request Method:", request.method)
-  console.log("Request URL:", request.url)
-  
-  console.log(params) //{ id: '651c28e5376b04cb9464d46c' }
  
   try {
     // Connect to the MongoDB database
@@ -17,9 +20,9 @@ export async function PUT(request, { params }) {
 
     // Extract the data from the request body
     const {
-      productName,
-      description,
-      price,
+      newProductName: productName,
+      newDescription: description,
+      newPrice: price,
     } = await request.json()
 
     // Use the Product model to find and update the product by its ID
@@ -28,7 +31,7 @@ export async function PUT(request, { params }) {
       { productName, description, price },
       { new: true }
     )
-    
+
     if (!updatedProduct) {
       return NextResponse.json({ message: "Product not found" }, { status: 404 })
     }
