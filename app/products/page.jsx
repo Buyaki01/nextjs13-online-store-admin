@@ -18,10 +18,8 @@ export default function Products() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('/api/products')
-        setProducts(response.data)
+        setProducts(response.data.products)
         setLoading(false)
-  
-        // console.log(response.data)
       } catch (error) {
         console.error("Error fetching products:", error)
       }
@@ -46,6 +44,20 @@ export default function Products() {
       <Nav />
       <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
         <Link href={'/products/new'} className="new-product py-1 px-2">Add new product</Link>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul>
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <li key={index}>{product.productName}</li>
+              ))
+            ) : (
+              <p>No products available.</p>
+            )}
+          </ul>
+        )}
 
       </div>
     </div>
