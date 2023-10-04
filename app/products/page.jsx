@@ -4,8 +4,9 @@ import { useSession, signIn, signOut } from "next-auth/react"
 
 import Link from "next/link"
 import Nav from "../components/Nav"
+import axios from "axios"
 
-export default function Products() {
+export default async function Products() {
 
   const { data: session } = useSession()
 
@@ -18,6 +19,10 @@ export default function Products() {
       </div>
     )
   }
+
+  await axios.get('/api/products', {
+    cache: "no-store",
+  })
 
   return (
     <div className="admin-panel-container min-h-screen flex">
