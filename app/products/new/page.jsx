@@ -3,6 +3,7 @@
 import Nav from "../../components/Nav"
 import axios from "axios"
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function NewProduct() {
@@ -11,6 +12,8 @@ export default function NewProduct() {
   const [productName, setProductName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+
+  const router = useRouter()
 
   if (!session) {
     return (
@@ -29,6 +32,8 @@ export default function NewProduct() {
     const data = { productName, description, price }
 
     await axios.post('/api/products', data)
+
+    router.push("/products")
   }
 
   return (
