@@ -29,7 +29,7 @@ export default function Products() {
       <Link href={'/products/new'} className="new-product py-1 px-2">Add new product</Link>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="mt-3 text-2xl">Loading...</p>
       ) : (
         <table className="basic mt-5">
           <thead>
