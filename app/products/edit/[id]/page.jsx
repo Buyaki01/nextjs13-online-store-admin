@@ -9,7 +9,7 @@ export default function EditProduct() {
   const [newProductName, setNewProductName] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newPrice, setNewPrice] = useState('')
-  const [newProductPhotos, setNewProductPhotos] = useState()
+  const [newProductPhotos, setNewProductPhotos] = useState([])
 
   const [product, setProduct] = useState(null)
 
@@ -73,8 +73,12 @@ export default function EditProduct() {
         }
   
         const response = await axios.post('/api/uploads', data)
+
+        console.log(response.data)
   
-        if (!response.ok) throw new Error(await response.text())
+        if (response.status !== 200) {
+          throw new Error('Failed to upload files')
+        }
       }
     } catch (e) {
       console.error(e)

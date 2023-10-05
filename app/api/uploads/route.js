@@ -13,6 +13,8 @@ export async function POST(request) {
     return NextResponse.json({ message: "No file to upload" })
   }
 
+  const uploadedImagePaths = []
+
   for (const file of files) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
@@ -20,13 +22,14 @@ export async function POST(request) {
     const imagePath = join('public', 'images', file.name)
 
     try {
-      await writeFile(imagePath, buffer)
+      await writeFile(imagePath, buffer) //Access the image on the browser using: http://localhost:3000/images/${file.name}
+      uploadedImagePaths.push(`/images/${file.name}`)
     } catch (error) {
         console.error('Error saving the uploaded file:', error)
         return NextResponse.json({ message: "Failed to save the uploaded file" })
     }
   }
 
-  return NextResponse.json({ message: "All files uploaded successfully" })
+  return NextResponse.json({ uploadedImagePaths })
 }
 
