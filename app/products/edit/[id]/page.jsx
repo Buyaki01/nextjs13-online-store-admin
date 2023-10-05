@@ -60,6 +60,21 @@ export default function EditProduct() {
     }
   }
 
+  const uploadPhotos = async (e) => {
+    // console.log(e)
+    const files = Array.from(e.target.files)
+
+    if (files?.length > 0) {
+      const data = new FormData()
+
+      files.forEach(file => data.append('file', file))
+
+      const response = await axios.post('/api/uploads', data)
+
+      console.log(response.data)
+    }
+  }
+
   return (
     <form onSubmit={updateProduct}>
       <h1>Edit Product</h1>
@@ -77,12 +92,12 @@ export default function EditProduct() {
           <div>No photos for this product</div>
         )}
 
-        <label className="w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
+        <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
           <div>Upload</div>
-          <input type="file" className="hidden" />
+          <input type="file" onChange={uploadPhotos} className="hidden" />
         </label>
 
       </div>
