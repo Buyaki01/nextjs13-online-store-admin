@@ -9,6 +9,7 @@ export default function NewProduct() {
   const [productName, setProductName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+  const [productPhotos, setProductPhotos] = useState()
 
   const router = useRouter()
 
@@ -33,6 +34,11 @@ export default function NewProduct() {
         value={productName}
         onChange={e => setProductName(e.target.value)}
       />
+
+      <label>Photos</label>
+      <div className="mb-2">
+        
+      </div>
 
       <label>Description</label>
       <textarea 
