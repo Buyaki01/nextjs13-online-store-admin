@@ -62,12 +62,14 @@ export default function EditProduct() {
 
   const uploadPhotos = async (e) => {
     // console.log(e)
-    const files = Array.from(e.target.files)
+    const files = e.target?.files
 
     if (files?.length > 0) {
       const data = new FormData()
 
-      files.forEach(file => data.append('file', file))
+      for (const file of files) {
+        data.append('file', file)
+      }
 
       const response = await axios.post('/api/uploads', data)
 
