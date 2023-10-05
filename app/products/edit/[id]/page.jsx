@@ -110,9 +110,12 @@ export default function EditProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-3 flex flex-wrap gap-2">
+      <div className="mb-3 flex flex-wrap gap-1">
         
-        <ReactSortable list={newUploadedImagePaths} setList={updateImagePathsOrder} className="flex flex-wrap gap-1">
+        <ReactSortable 
+          list={newUploadedImagePaths} 
+          className="flex flex-wrap gap-1"
+          setList={updateImagePathsOrder}>
           {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
             <div key={imagePath} className="h-24">
               <img src={imagePath} alt="" className="rounded-lg" />
