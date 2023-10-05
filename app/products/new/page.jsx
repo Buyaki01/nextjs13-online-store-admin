@@ -3,6 +3,7 @@
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import Spinner from "../../components/Spinner"
 
 export default function NewProduct() {
 
@@ -10,6 +11,7 @@ export default function NewProduct() {
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
   const [uploadedImagePaths, setUploadedImagePaths] = useState([])
+  const [isUploading, setIsUploading] = useState(false)
 
   const router = useRouter()
 
@@ -29,6 +31,8 @@ export default function NewProduct() {
 
     try {
       if (files?.length > 0) {
+        setIsUploading(true)
+
         const data = new FormData()
   
         for (const file of files) {
@@ -40,7 +44,8 @@ export default function NewProduct() {
         setUploadedImagePaths(prevImagePaths => {
           return [...prevImagePaths, ...response.data.uploadedImagePaths] //The uploadedImagePaths in response.data.uploadedImagePaths is coming from the server
         })
-
+        
+        setIsUploading(false)
       }
     } catch (e) {
       console.error(e)
@@ -59,12 +64,18 @@ export default function NewProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-2 flex flex-wrap gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
         {!!uploadedImagePaths?.length && uploadedImagePaths.map(imagePath => (
           <div key={imagePath} className="h-24">
             <img src={imagePath} alt="" className="rounded-lg" />
           </div>
         ))}
+
+        {isUploading && (
+          <div className="h-24 flex items-center"> 
+            <Spinner />
+          </div>
+        )}
 
         <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">

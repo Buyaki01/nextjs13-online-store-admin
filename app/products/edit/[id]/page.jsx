@@ -3,6 +3,7 @@
 import axios from "axios"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import Spinner from '../../../components/Spinner'
 
 export default function EditProduct() {
 
@@ -102,7 +103,7 @@ export default function EditProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-2 flex flex-wrap gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
 
         {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
           <div key={imagePath} className="h-24">
@@ -111,8 +112,8 @@ export default function EditProduct() {
         ))}
 
         {isUploading && (
-          <div className="h-24"> 
-            Uploading...
+          <div className="h-24 flex items-center"> 
+            <Spinner />
           </div>
         )}
 
