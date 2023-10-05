@@ -9,7 +9,7 @@ export default function NewProduct() {
   const [productName, setProductName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
-  const [productPhotos, setProductPhotos] = useState()
+  const [uploadedImagePaths, setUploadedImagePaths] = useState([])
 
   const router = useRouter()
 
@@ -17,11 +17,34 @@ export default function NewProduct() {
 
     e.preventDefault()
 
-    const data = { productName, description, price }
+    const data = { productName, description, price, uploadedImagePaths }
 
     await axios.post('/api/products', data)
 
     router.push("/products")
+  }
+
+  const uploadPhotos = async (e) => { //Saves the uploaded images directly to the server
+    const files = e.target?.files
+
+    try {
+      if (files?.length > 0) {
+        const data = new FormData()
+  
+        for (const file of files) {
+          data.append('uploads', file)
+        }
+  
+        const response = await axios.post('/api/uploads', data)
+
+        setUploadedImagePaths(prevImagePaths => {
+          return [...prevImagePaths, ...response.data.uploadedImagePaths] //The uploadedImagePaths in response.data.uploadedImagePaths is coming from the server
+        })
+
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -36,8 +59,21 @@ export default function NewProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-2">
-        
+      <div className="mb-2 flex flex-wrap gap-2">
+        {!!uploadedImagePaths?.length && uploadedImagePaths.map(imagePath => (
+          <div key={imagePath} className="h-24">
+            <img src={imagePath} alt="" className="rounded-lg" />
+          </div>
+        ))}
+
+        <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+          </svg>
+          <div>Upload</div>
+          <input type="file" onChange={uploadPhotos} multiple className="hidden" />
+        </label>
+
       </div>
 
       <label>Description</label>

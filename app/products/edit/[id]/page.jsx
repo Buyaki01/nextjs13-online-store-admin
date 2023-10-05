@@ -9,7 +9,8 @@ export default function EditProduct() {
   const [newProductName, setNewProductName] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newPrice, setNewPrice] = useState('')
-  const [newProductPhotos, setNewProductPhotos] = useState([])
+  const [newUploadedImagePaths, setNewUploadedImagePaths] = useState([])
+  const [isUploading, setIsUploading] = useState(false)
 
   const [product, setProduct] = useState(null)
 
@@ -29,6 +30,7 @@ export default function EditProduct() {
           setNewProductName(productData.productName)
           setNewDescription(productData.description)
           setNewPrice(productData.price)
+          setNewUploadedImagePaths(productData.uploadedImagePaths)
         }
       } catch (error) {
         console.error("Error fetching product:", error)
@@ -47,6 +49,7 @@ export default function EditProduct() {
       newProductName,
       newDescription,
       newPrice,
+      newUploadedImagePaths,
     }
 
     try {
@@ -66,6 +69,8 @@ export default function EditProduct() {
 
     try {
       if (files?.length > 0) {
+        setIsUploading(true)
+
         const data = new FormData()
   
         for (const file of files) {
@@ -73,12 +78,12 @@ export default function EditProduct() {
         }
   
         const response = await axios.post('/api/uploads', data)
+        
+        setNewUploadedImagePaths(prevImagePaths => {
+          return [...prevImagePaths, ...response.data.uploadedImagePaths]
+        })
 
-        console.log(response.data)
-  
-        if (response.status !== 200) {
-          throw new Error('Failed to upload files')
-        }
+        setIsUploading(false)
       }
     } catch (e) {
       console.error(e)
@@ -97,9 +102,18 @@ export default function EditProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-2">
-        {!newProductPhotos?.length && (
-          <div>No photos for this product</div>
+      <div className="mb-2 flex flex-wrap gap-2">
+
+        {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
+          <div key={imagePath} className="h-24">
+            <img src={imagePath} alt="" className="rounded-lg" />
+          </div>
+        ))}
+
+        {isUploading && (
+          <div className="h-24"> 
+            Uploading...
+          </div>
         )}
 
         <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
