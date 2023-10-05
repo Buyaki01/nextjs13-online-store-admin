@@ -4,6 +4,7 @@ import axios from "axios"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Spinner from '../../../components/Spinner'
+import { ReactSortable } from "react-sortablejs"
 
 export default function EditProduct() {
 
@@ -91,6 +92,12 @@ export default function EditProduct() {
     }
   }
 
+  function updateImagePathsOrder(newUploadedImagePaths) {
+    //console.log(arguments)
+    //console.log(newUploadedImagePaths)
+    setNewUploadedImagePaths(newUploadedImagePaths)
+  }
+
   return (
     <form onSubmit={updateProduct}>
       <h1>Edit Product</h1>
@@ -103,13 +110,15 @@ export default function EditProduct() {
       />
 
       <label>Photos</label>
-      <div className="mb-6 flex flex-wrap gap-2">
-
-        {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
-          <div key={imagePath} className="h-24">
-            <img src={imagePath} alt="" className="rounded-lg" />
-          </div>
-        ))}
+      <div className="mb-3 flex flex-wrap gap-2">
+        
+        <ReactSortable list={newUploadedImagePaths} setList={updateImagePathsOrder} className="flex flex-wrap gap-1">
+          {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
+            <div key={imagePath} className="h-24">
+              <img src={imagePath} alt="" className="rounded-lg" />
+            </div>
+          ))}
+        </ReactSortable>
 
         {isUploading && (
           <div className="h-24 flex items-center"> 
