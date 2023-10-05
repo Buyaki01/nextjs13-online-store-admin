@@ -64,16 +64,20 @@ export default function EditProduct() {
     // console.log(e)
     const files = e.target?.files
 
-    if (files?.length > 0) {
-      const data = new FormData()
-
-      for (const file of files) {
-        data.append('file', file)
+    try {
+      if (files?.length > 0) {
+        const data = new FormData()
+  
+        for (const file of files) {
+          data.append('uploads', file)
+        }
+  
+        const response = await axios.post('/api/uploads', data)
+  
+        if (!response.ok) throw new Error(await response.text())
       }
-
-      const response = await axios.post('/api/uploads', data)
-
-      console.log(response.data)
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -99,7 +103,7 @@ export default function EditProduct() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
           <div>Upload</div>
-          <input type="file" onChange={uploadPhotos} className="hidden" />
+          <input type="file" onChange={uploadPhotos} multiple className="hidden" />
         </label>
 
       </div>
