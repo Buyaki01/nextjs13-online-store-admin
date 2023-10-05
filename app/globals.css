@@ -47,6 +47,6 @@ table.basic tr td{
 }
 
 table.basic a{
-  @apply text-white text-sm py-1 px-2 rounded-md inline-flex gap-1;
+  @apply text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1;
   background-color: #d40d9a;
 }
