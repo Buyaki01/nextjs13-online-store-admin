@@ -7,8 +7,8 @@ This is an ecommerce app for administrators to efficiently manage their customer
 - **NextJs 13**
 - **next-auth**
 - **React**
-- **Tailwind**
 - **MongoDB**
+- **Tailwind CSS**
 
 ### Getting Started
 To get started with this app, follow these steps:
@@ -67,5 +67,12 @@ Feel free to check the [issues page](https://github.com/Buyaki01/nextjs13-ecomme
 Give a ⭐️ if you like this project!
 
 ## Acknowledgments
+
+I would like to acknowledge the following sources and individuals for their contributions, inspiration, and resources that helped in the development of this project:
+
 - Inspiration: [Dave Gray](https://www.youtube.com/@DaveGrayTeachesCode)
-- Inspiration: [GTCoding](https://www.youtube.com/@GTCoding)
+- Inspiration: [GTCoding](https://www.youtube.com/@GTCoding) for tutorials on NextJs 13, CRUD Operations 
+- Inspiration: [Hamed Bahram](https://www.youtube.com/@hamedbahram) for tutorials on NextJs 13, Next-Auth
+- Inspiration: [Coding with Dawid](https://www.youtube.com/@CodingWithDawid)
+
+These sources have been instrumental in shaping and enhancing the features of this project.
