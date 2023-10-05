@@ -42,3 +42,25 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ message: "Error updating product" }, { status: 500 })
   }
 }
+
+export async function DELETE(request, { params }) {
+
+  const { id } = params
+
+  try {
+    await connectMongoDB()
+
+    const deletedProduct = await Product.findByIdAndDelete(id)
+
+    if (!deletedProduct) {
+      return NextResponse.json({ message: "Product not found" }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: "Product deleted successfully" }, { status: 200 })
+
+  } catch (error) {
+    console.error("Error deleting product:", error)
+    return NextResponse.json({ message: "Error deleting product" }, { status: 500 })
+  }
+
+}
