@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+img{
+  max-height: 100%;
+}
+
 .admin-panel-container {
   background-color: rgb(146, 212, 59);
 }
