@@ -67,7 +67,7 @@ export default function Products() {
                   ))
                 ) 
               : (
-                  <p>No products available.</p>
+                  <h1>No products available.</h1>
                 )
             }
           </tbody>

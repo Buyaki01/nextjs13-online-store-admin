@@ -5,26 +5,30 @@ import { useState, useEffect } from "react"
 
 export default function Categories() {
   const [name, setName] = useState()
+  const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('/api/categories')
-        setCategories(response.data.categories)
-      } catch (error) {
-        console.error("Error fetching Categories:", error)
-      }
-    }
-
     fetchCategories()
   }, [])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('/api/categories')
+      setCategories(response.data.categories)
+      setLoading(false)
+    } catch (error) {
+      console.error("Error fetching Categories:", error)
+    }
+  }
 
   async function addCategory(e) {
     e.preventDefault()
 
-    await axios.post('/api/categories', { name })
+    await axios.post('/api/categories', { name, parentCategory })
     setName('')
+    fetchCategories()
   }
 
   return (
@@ -39,7 +43,21 @@ export default function Categories() {
             className="mb-0"
             value={name}
             onChange={e => setName(e.target.value)}
-          />
+          /> 
+
+          <select 
+            className="mb-0" 
+            value={parentCategory}
+            onChange={e => setParentCategory(e.target.value)}
+          >
+            <option value="0">No parent category</option>
+
+            {categories.length > 0 && categories.map(category => (
+              <option key={category._id} value={category._id}>{category.name}</option>
+            ))}
+
+          </select>
+
           <button type="submit" className="btn btn-primary">Save</button>
         </div>
       </form>
@@ -48,15 +66,29 @@ export default function Categories() {
         <thead>
           <tr>
             <td>Category Name</td>
+            <td>Parent Category</td>
           </tr>
         </thead>
 
         <tbody>
-          {categories.length > 0 && categories.map(category => (
-            <tr key={category._id}>
-              <td>{category.name}</td>
-            </tr>
-          ))}
+
+        {loading 
+          ? (
+              <p className="loading-categories mt-3 text-xl text-center">Loading...</p>
+            ) 
+          : (
+            categories.length > 0 
+              ? (categories.map(category => (
+                  <tr key={category._id}>
+                    <td>{category.name}</td>
+                    <td>{category?.parentCategory?.name}</td>
+                  </tr>
+                )))
+              : (
+                <p>No categories available.</p>
+              )
+          )
+        }
         </tbody>
       </table>
     </>
