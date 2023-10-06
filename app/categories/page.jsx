@@ -58,7 +58,7 @@ export default function Categories() {
 
           </select>
 
-          <button type="submit" className="btn btn-primary">Save</button>
+          <button type="submit" className="btn btn-default">Save</button>
         </div>
       </form>
 
@@ -82,6 +82,12 @@ export default function Categories() {
                   <tr key={category._id}>
                     <td>{category.name}</td>
                     <td>{category?.parentCategory?.name}</td>
+                    <td>
+                      <div className="flex gap-1">
+                        <button className="btn-primary">Edit</button>
+                        <button className="btn-primary">Delete</button>
+                      </div>
+                    </td>
                   </tr>
                 )))
               : (

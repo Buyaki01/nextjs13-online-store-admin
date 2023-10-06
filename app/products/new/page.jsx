@@ -115,7 +115,7 @@ export default function NewProduct() {
 
       <button 
         type="submit"
-        className="btn-primary"
+        className="btn-default"
       >
         Save
       </button>

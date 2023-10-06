@@ -26,7 +26,7 @@ export default function Products() {
       
   return (
     <>
-      <Link href={'/products/new'} className="new-product py-1 px-2">Add new product</Link>
+      <Link href={'/products/new'} className="btn-default py-1 px-2">Add new product</Link>
 
       {loading 
       ? (
