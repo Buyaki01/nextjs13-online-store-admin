@@ -53,7 +53,7 @@ export default function DeleteProduct() {
           <>
             <h1 className="text-center">Do you really want to delete&nbsp;<span className="delete-product bold underline">{product?.productName}</span>?</h1>
             <div className="flex gap-2 justify-center">
-              <button className="btn-red" onClick={deleteProduct}>Yes</button>
+              <button className="btn-primary" onClick={deleteProduct}>Yes</button>
               <button className="btn-default" onClick={handleButtonClick}>No</button>
             </div>
           </>
