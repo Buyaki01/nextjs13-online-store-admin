@@ -1,10 +1,11 @@
-const { Schema, model, models } = require("mongoose")
+const { Schema, model, models, default: mongoose } = require("mongoose")
 
 const ProductSchema = new Schema({
   productName: { type: String, required: true },
   description: String,
   price: { type: Number, required: true },
   uploadedImagePaths: [{ type: String }],
+  selectedCategory: { type: mongoose.Types.ObjectId, ref: 'Category' }
 })
 
 export const Product = models.Product || model('Product', ProductSchema)

@@ -3,11 +3,11 @@ import connectMongoDB from "../../../lib/mongoose"
 import { Product } from "../../../models/Product"
 
 export async function POST(request) {
-  const { productName, description, price, uploadedImagePaths } = await request.json()
+  const { productName, description, price, uploadedImagePaths, selectedCategory } = await request.json()
 
   await connectMongoDB()
 
-  await Product.create({ productName, description, price, uploadedImagePaths })
+  await Product.create({ productName, description, price, uploadedImagePaths, selectedCategory })
 
   return NextResponse.json({ message: "Product Created" }, { status: 201 })
 }
