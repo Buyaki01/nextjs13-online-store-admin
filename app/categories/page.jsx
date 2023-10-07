@@ -2,8 +2,9 @@
 
 import axios from "axios"
 import { useState, useEffect } from "react"
+import { withSwal } from 'react-sweetalert2'
 
-export default function Categories() {
+function Categories({ swal }) {
   const [editCategoryInfo, setEditCategoryInfo] = useState(null)
   const [name, setName] = useState()
   const [parentCategory, setParentCategory] = useState('')
@@ -43,6 +44,25 @@ export default function Categories() {
     setEditCategoryInfo(category)
     setName(category.name)
     setParentCategory(category.parentCategory?._id)
+  }
+
+  function deleteCategory(category) {
+    swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete ${category.name}?`,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, Delete!',
+      confirmButtonColor: '#d55', 
+      reverseButtons: true,
+    }).then(async result => {
+
+      // console.log({ result })
+      if (result.isConfirmed) {
+        await axios.delete(`/api/categories/${category._id}`) //The DELETE request typically does not have a request body in the same way as POST or PUT requests. Instead, you usually include the data you want to send in the URL or as query parameters
+        fetchCategories()
+      }
+    })
   }
 
   return (
@@ -104,7 +124,13 @@ export default function Categories() {
                         Edit
                       </button>
 
-                      <button className="btn-primary">Delete</button>
+                      <button 
+                        className="btn-primary"
+                        onClick={() => deleteCategory(category)}
+                      >
+                        Delete
+                      </button>
+
                     </td>
                   </tr>
                 )))
@@ -118,3 +144,7 @@ export default function Categories() {
     </>
   )
 }
+
+export default withSwal(({ swal }, ref) => (
+  <Categories swal={swal}/>
+))
