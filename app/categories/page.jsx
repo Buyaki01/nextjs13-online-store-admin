@@ -59,7 +59,7 @@ function Categories({ swal }) {
 
       // console.log({ result })
       if (result.isConfirmed) {
-        await axios.delete(`/api/categories/${category._id}`)
+        await axios.delete(`/api/categories/${category._id}`) //The DELETE request typically does not have a request body in the same way as POST or PUT requests. Instead, you usually include the data you want to send in the URL or as query parameters
         fetchCategories()
       }
     })
