@@ -2,7 +2,7 @@
 
 import axios from "axios"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Spinner from "../../components/Spinner"
 import { ReactSortable } from "react-sortablejs"
 
@@ -13,21 +13,32 @@ export default function NewProduct() {
   const [price, setPrice] = useState('')
   const [uploadedImagePaths, setUploadedImagePaths] = useState([])
   const [isUploading, setIsUploading] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('')
 
   const router = useRouter()
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await axios.get('/api/categories')
+      setCategories(response.data.categories)
+    }
+
+    fetchCategories()
+  }, [])
 
   async function createProduct(e) {
 
     e.preventDefault()
 
-    const data = { productName, description, price, uploadedImagePaths }
+    const data = { productName, description, price, uploadedImagePaths, selectedCategory } // Sending selectedCategory as an id for Category because our value for option is category._id
 
     await axios.post('/api/products', data)
 
     router.push("/products")
   }
 
-  const uploadPhotos = async (e) => { //Saves the uploaded images directly to the server
+  const uploadPhotos = async (e) => { //Saves the uploaded images directly to the computer/ AWS S3 Bucket / Cloud storage, whatever you would have stated in the server
     const files = e.target?.files
 
     try {
@@ -67,6 +78,17 @@ export default function NewProduct() {
         value={productName}
         onChange={e => setProductName(e.target.value)}
       />
+
+      <label>Category</label>
+      <select
+        value={selectedCategory}
+        onChange={e => setSelectedCategory(e.target.value)}
+      >
+        <option>Uncategorized</option>
+        {categories.length > 0 && categories.map(category => (
+          <option value={category._id}>{category.name}</option>
+        ))}
+      </select>
 
       <label>Photos</label>
       <div className="mb-3 flex flex-wrap gap-1">
