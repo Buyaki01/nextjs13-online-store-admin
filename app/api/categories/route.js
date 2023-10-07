@@ -18,3 +18,29 @@ export async function GET() {
 
   return NextResponse.json({ categories })
 }
+
+export async function PUT(request) {
+ 
+  try {
+    await connectMongoDB()
+
+    const {
+      name, parentCategory, _id
+    } = await request.json()
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      _id,
+      { name, parentCategory },
+      { new: true }
+    )
+
+    if (!updatedCategory) {
+      return NextResponse.json({ message: "Category not found" }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: "Category updated successfully", updatedCategory }, { status: 200 })
+  } catch (error) {
+    console.error("Error updating category:", error)
+    return NextResponse.json({ message: "Error updating category" }, { status: 500 })
+  }
+}

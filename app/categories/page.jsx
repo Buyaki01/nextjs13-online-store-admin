@@ -4,6 +4,7 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 
 export default function Categories() {
+  const [editCategoryInfo, setEditCategoryInfo] = useState(null)
   const [name, setName] = useState()
   const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState([])
@@ -21,21 +22,34 @@ export default function Categories() {
     } catch (error) {
       console.error("Error fetching Categories:", error)
     }
-  }
+  } 
 
   async function addCategory(e) {
     e.preventDefault()
+    const data = { name, parentCategory }
 
-    await axios.post('/api/categories', { name, parentCategory })
+    if (editCategoryInfo) {
+      await axios.put('/api/categories', {...data, _id: editCategoryInfo._id})
+      setEditCategoryInfo(null)
+    } else {
+      await axios.post('/api/categories', data)
+    }
+
     setName('')
     fetchCategories()
+  }
+
+  async function editCategory(category) {
+    setEditCategoryInfo(category)
+    setName(category.name)
+    setParentCategory(category.parentCategory?._id)
   }
 
   return (
     <>
       <h1>Categories</h1>
       <form onSubmit={addCategory}>
-        <label>New Category name</label>
+        <label>{ editCategoryInfo ? `Edit Category ${editCategoryInfo.name}` : 'Create New Category' }</label>
         <div className="flex gap-1">
           <input 
             type="text" 
@@ -83,10 +97,14 @@ export default function Categories() {
                     <td>{category.name}</td>
                     <td>{category?.parentCategory?.name}</td>
                     <td>
-                      <div className="flex gap-1">
-                        <button className="btn-primary">Edit</button>
-                        <button className="btn-primary">Delete</button>
-                      </div>
+                      <button 
+                        onClick={() => editCategory(category)} 
+                        className="btn-primary mr-1"
+                      >
+                        Edit
+                      </button>
+
+                      <button className="btn-primary">Delete</button>
                     </td>
                   </tr>
                 )))
