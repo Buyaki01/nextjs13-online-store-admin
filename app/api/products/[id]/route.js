@@ -24,12 +24,13 @@ export async function PUT(request, { params }) {
       newDescription: description,
       newPrice: price,
       newUploadedImagePaths: uploadedImagePaths,
+      newSelectedCategory: selectedCategory
     } = await request.json()
 
     // Use the Product model to find and update the product by its ID
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { productName, description, price, uploadedImagePaths },
+      { productName, description, price, uploadedImagePaths, selectedCategory },
       { new: true }
     )
 

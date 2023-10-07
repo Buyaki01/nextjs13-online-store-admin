@@ -12,8 +12,9 @@ export default function EditProduct() {
   const [newDescription, setNewDescription] = useState('')
   const [newPrice, setNewPrice] = useState('')
   const [newUploadedImagePaths, setNewUploadedImagePaths] = useState([])
+  const [categories, setCategories] = useState([])
+  const [newSelectedCategory, setNewSelectedCategory] = useState('')
   const [isUploading, setIsUploading] = useState(false)
-
   const [product, setProduct] = useState(null)
 
   const params = useParams()
@@ -33,6 +34,7 @@ export default function EditProduct() {
           setNewDescription(productData.description)
           setNewPrice(productData.price)
           setNewUploadedImagePaths(productData.uploadedImagePaths)
+          setNewSelectedCategory(productData.selectedCategory)
         }
       } catch (error) {
         console.error("Error fetching product:", error)
@@ -40,8 +42,16 @@ export default function EditProduct() {
     }
 
     fetchProduct()
-  
   }, [id])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await axios.get('/api/categories')
+      setCategories(response.data.categories)
+    }
+
+    fetchCategories()
+  }, [])
 
   const updateProduct = async (e) => {
     e.preventDefault()
@@ -52,6 +62,7 @@ export default function EditProduct() {
       newDescription,
       newPrice,
       newUploadedImagePaths,
+      newSelectedCategory,
     }
 
     try {
@@ -108,6 +119,17 @@ export default function EditProduct() {
         value={newProductName}
         onChange={e => setNewProductName(e.target.value)}
       />
+
+      <label>Category</label>
+      <select
+        value={newSelectedCategory}
+        onChange={e => setNewSelectedCategory(e.target.value)}
+      >
+        <option>Uncategorized</option>
+        {categories.length > 0 && categories.map(category => (
+          <option key={category._id} value={category._id}>{category.name}</option>
+        ))}
+      </select>
 
       <label>Photos</label>
       <div className="mb-3 flex flex-wrap gap-1">
