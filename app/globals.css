@@ -41,6 +41,10 @@ label{
   color: rgb(146, 212, 59);
 }
 
+.new-property{
+  @apply text-white px-1 py-1 mt-1 rounded-md;
+}
+
 table.basic{
   @apply w-full;
 }
