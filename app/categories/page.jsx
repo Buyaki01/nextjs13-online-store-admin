@@ -92,7 +92,12 @@ function Categories({ swal }) {
   }
 
   function removeProperty(index) {
-    
+    setProperties(prev => {
+      const newProperties = [...prev]
+      return newProperties.filter((prop, propIndex) => {
+        return true
+      })
+    })
   }
 
   return (
