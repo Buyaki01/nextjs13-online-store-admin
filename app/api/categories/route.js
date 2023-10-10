@@ -3,11 +3,13 @@ import connectMongoDB from "../../../lib/mongoose"
 import Category from "../../../models/Category"
 
 export async function POST(request) {
-  const { name, parentCategory } = await request.json()
+  const { name, parentCategory, properties } = await request.json()
 
   await connectMongoDB()
 
-  await Category.create({ name, parentCategory })
+  const updatedParentCategory = parentCategory !== undefined && parentCategory !== null ? parentCategory : null
+
+  await Category.create({ name, parentCategory: updatedParentCategory, properties })
 
   return NextResponse.json({ message: "Category Created Successfully" }, { status: 201 })
 }
@@ -25,12 +27,14 @@ export async function PUT(request) {
     await connectMongoDB()
 
     const {
-      name, parentCategory, _id
+      name, parentCategory, _id, properties
     } = await request.json()
+
+    const updatedParentCategory = parentCategory !== undefined && parentCategory !== null ? parentCategory : null
 
     const updatedCategory = await Category.findByIdAndUpdate(
       _id,
-      { name, parentCategory },
+      { name, parentCategory: updatedParentCategory, properties },
       { new: true }
     )
 

@@ -28,7 +28,14 @@ function Categories({ swal }) {
 
   async function addCategory(e) {
     e.preventDefault()
-    const data = { name, parentCategory }
+    const data = { 
+      name, 
+      parentCategory, 
+      properties: properties.map(property => ({
+        name: property.name,
+        values: property.values.split(','),
+      }))
+    }
 
     if (editedCategoryInfo) {
       await axios.put('/api/categories', {...data, _id: editedCategoryInfo._id})
@@ -38,6 +45,9 @@ function Categories({ swal }) {
     }
 
     setName('')
+    setParentCategory('')
+    setProperties([])
+
     fetchCategories()
   }
 
@@ -191,6 +201,7 @@ function Categories({ swal }) {
             <tr>
               <td>Category Name</td>
               <td>Parent Category</td>
+              <td></td>
             </tr>
           </thead>
 
