@@ -55,7 +55,10 @@ function Categories({ swal }) {
     setEditedCategoryInfo(category)
     setName(category.name)
     setParentCategory(category.parentCategory?._id)
-    setProperties(category.properties)
+    setProperties(category.properties.map(({ name, values }) => ({ 
+      name,
+      values: values.join(',')
+    })))
   }
 
   function deleteCategory(category) {
@@ -184,6 +187,7 @@ function Categories({ swal }) {
                 setEditedCategoryInfo(null)
                 setName('')
                 setParentCategory('')
+                setProperties([])
               }}
               className="btn-primary"
             >
