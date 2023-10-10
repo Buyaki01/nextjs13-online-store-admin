@@ -58,6 +58,14 @@ table.basic tr td{
   @apply border border-slate-400 p-1;
 }
 
+table.basic td:first-child {
+  /* Set a fixed height for the product name cell */
+  height: 40px; /* Adjust the height as needed */
+  overflow: hidden; /* Hide any content that overflows */
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+
 table.basic a{
   @apply text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1;
   background-color: rgb(146, 212, 59);

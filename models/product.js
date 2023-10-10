@@ -5,7 +5,8 @@ const ProductSchema = new Schema({
   description: String,
   price: { type: Number, required: true },
   uploadedImagePaths: [{ type: String }],
-  selectedCategory: { type: mongoose.Types.ObjectId, ref: 'Category' }
+  selectedCategory: { type: mongoose.Types.ObjectId, ref: 'Category' },
+  properties: {type:Object},
 })
 
 export const Product = models.Product || model('Product', ProductSchema)

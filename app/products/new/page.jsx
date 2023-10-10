@@ -16,6 +16,7 @@ export default function NewProduct() {
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [properties, setProperties] = useState({})
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
 
   const router = useRouter()
 
@@ -23,6 +24,7 @@ export default function NewProduct() {
     const fetchCategories = async () => {
       const response = await axios.get('/api/categories')
       setCategories(response.data.categories)
+      setIsLoadingCategories(false)
     }
 
     fetchCategories()
@@ -32,7 +34,7 @@ export default function NewProduct() {
 
     e.preventDefault()
 
-    const data = { productName, description, price, uploadedImagePaths, selectedCategory } // Sending selectedCategory as an id for Category because our value for option is category._id
+    const data = { productName, description, price, uploadedImagePaths, selectedCategory, properties } // Sending selectedCategory as an id for Category because our value for option is category._id
 
     await axios.post('/api/products', data)
 
@@ -69,6 +71,26 @@ export default function NewProduct() {
     setUploadedImagePaths(uploadedImagePaths)
   }
 
+  function setProductProp(propName,value) {
+    setProperties(prev => {
+      const newProductProps = {...prev}
+      newProductProps[propName] = value
+      return newProductProps
+    })
+  }
+
+  const propertiesToFill = []
+  if (categories.length > 0 && selectedCategory) {
+    let categoryInfo = categories.find(({_id}) => _id === selectedCategory)
+    propertiesToFill.push(...categoryInfo.properties)
+
+    while(categoryInfo?.parentCategory?._id) {
+      const categoryForParent = categories.find(({_id}) => _id === categoryInfo.parentCategory._id)
+      propertiesToFill.push(...categoryForParent.properties)
+      categoryInfo = categoryForParent
+    }
+  }
+
   return (
     <form onSubmit={createProduct}>
       <h1>New Product</h1>
@@ -81,15 +103,39 @@ export default function NewProduct() {
       />
 
       <label>Category</label>
-      <select
-        value={selectedCategory}
-        onChange={e => setSelectedCategory(e.target.value)}
-      >
-        <option>Uncategorized</option>
-        {categories.length > 0 && categories.map(category => (
-          <option key={category._id} value={category._id}>{category.name}</option>
-        ))}
-      </select>
+      {isLoadingCategories 
+        ? (
+            <p className="mb-1">Loading categories...</p>
+          )
+        : (
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+            >
+              <option>Uncategorized</option>
+              {categories.length > 0 && categories.map(category => (
+                <option key={category._id} value={category._id}>{category.name}</option>
+              ))}
+            </select>
+          ) 
+      }
+
+      {propertiesToFill.length > 0 && propertiesToFill.map(p => (
+        <div key={p.name} className="">
+          <label>{p.name[0].toUpperCase()+p.name.substring(1)}</label>
+          <div>
+            <select value={properties[p.name]}
+                    onChange={ev =>
+                      setProductProp(p.name,ev.target.value)
+                    }
+            >
+              {p.values.map(v => (
+                <option key={v} value={v}>{v}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      ))}
 
       <label>Photos</label>
       <div className="mb-3 flex flex-wrap gap-1">

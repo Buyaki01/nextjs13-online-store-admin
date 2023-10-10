@@ -38,6 +38,7 @@ export default function EditProduct() {
           setNewPrice(productData.price)
           setNewUploadedImagePaths(productData.uploadedImagePaths)
           setNewSelectedCategory(productData.selectedCategory)
+          setNewProperties(productData.properties || {})
           setIsLoading(false)
         }
       } catch (error) {
@@ -119,8 +120,8 @@ export default function EditProduct() {
     setNewProperties(prev => {
       const newProductProps = {...prev}
       newProductProps[propName] = value
-      return newProductProps;
-    });
+      return newProductProps
+    })
   }
 
   const propertiesToFill = []
@@ -173,13 +174,17 @@ export default function EditProduct() {
             }
 
             {propertiesToFill.length > 0 && propertiesToFill.map(p => (
-              <div key={p.name} className="">
+              <div 
+                key={p.name} 
+                className=""
+              >
                 <label>{p.name[0].toUpperCase()+p.name.substring(1)}</label>
                 <div>
-                  <select value={newProperties[p.name]}
-                          onChange={ev =>
-                            setProductProp(p.name,ev.target.value)
-                          }
+                  <select 
+                    value={newProperties[p.name] || ''}
+                    onChange={ev =>
+                      setProductProp(p.name,ev.target.value)
+                    }
                   >
                     {p.values.map(v => (
                       <option key={v} value={v}>{v}</option>
