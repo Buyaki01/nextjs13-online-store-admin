@@ -15,6 +15,7 @@ export default function NewProduct() {
   const [isUploading, setIsUploading] = useState(false)
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [properties, setProperties] = useState({})
 
   const router = useRouter()
 
