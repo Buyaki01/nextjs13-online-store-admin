@@ -62,6 +62,10 @@ function Categories({ swal }) {
   }
 
   function deleteCategory(category) {
+
+    const updatedCategories = categories.filter((c) => c._id !== category._id)
+    setCategories(updatedCategories)
+
     swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete ${category.name}?`,
@@ -74,8 +78,15 @@ function Categories({ swal }) {
 
       // console.log({ result })
       if (result.isConfirmed) {
-        await axios.delete(`/api/categories/${category._id}`) //The DELETE request typically does not have a request body in the same way as POST or PUT requests. Instead, you usually include the data you want to send in the URL or as query parameters
-        fetchCategories()
+        try {
+
+          await axios.delete(`/api/categories/${category._id}`) //The DELETE request typically does not have a request body in the same way as POST or PUT requests. Instead, you usually include the data you want to send in the URL or as query parameters
+        } catch (error) {
+          console.error('Error deleting category:', error)
+
+          // If an error occurs, revert the local state to its previous state
+          setCategories([...categories])
+        }
       }
     })
   }

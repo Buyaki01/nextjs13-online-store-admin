@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
 import Category from "../../../../models/Category"
+import { Product } from "../../../../models/Product"
 
 export async function DELETE(request, { params }) {
   const { id } = params
 
   try {
     await connectMongoDB()
+
+    const productsToUpdate = await Product.find({ selectedCategory: id })
+
+    // Update selectedCategory for these products
+    for (const product of productsToUpdate) {
+      product.selectedCategory = null
+      await product.save()
+    }
 
     const deletedCategory = await Category.findByIdAndDelete(id)
 
