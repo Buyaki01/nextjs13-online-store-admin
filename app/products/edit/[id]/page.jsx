@@ -17,6 +17,7 @@ export default function EditProduct() {
   const [isUploading, setIsUploading] = useState(false)
   const [product, setProduct] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
 
   const params = useParams()
 
@@ -50,6 +51,7 @@ export default function EditProduct() {
     const fetchCategories = async () => {
       const response = await axios.get('/api/categories')
       setCategories(response.data.categories)
+      setIsLoadingCategories(false)
     }
 
     fetchCategories()
@@ -128,15 +130,24 @@ export default function EditProduct() {
             />
 
             <label>Category</label>
-            <select
-              value={newSelectedCategory}
-              onChange={e => setNewSelectedCategory(e.target.value)}
-            >
-              <option>Uncategorized</option>
-              {categories.length > 0 && categories.map(category => (
-                <option key={category._id} value={category._id}>{category.name}</option>
-              ))}
-            </select>
+
+            {isLoadingCategories 
+              ? (
+                  <p>Loading categories...</p>
+                )
+              : (
+                <select
+                  value={newSelectedCategory}
+                  onChange={e => setNewSelectedCategory(e.target.value)}
+                >
+                  <option>Uncategorized</option>
+
+                  {categories.length > 0 && categories.map(category => (
+                    <option key={category._id} value={category._id}>{category.name}</option>
+                  ))}
+                </select>
+              ) 
+            }
 
             <label>Photos</label>
             <div className="mb-3 flex flex-wrap gap-1">
