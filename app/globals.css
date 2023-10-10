@@ -41,6 +41,10 @@ label{
   color: rgb(146, 212, 59);
 }
 
+.new-property{
+  @apply text-white px-1 py-1 mt-1 rounded-md;
+}
+
 table.basic{
   @apply w-full;
 }
@@ -52,6 +56,14 @@ table.basic thead tr td{
 
 table.basic tr td{
   @apply border border-slate-400 p-1;
+}
+
+table.basic td:first-child {
+  /* Set a fixed height for the product name cell */
+  height: 40px; /* Adjust the height as needed */
+  overflow: hidden; /* Hide any content that overflows */
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
 }
 
 table.basic a{
