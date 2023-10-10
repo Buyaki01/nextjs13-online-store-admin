@@ -55,6 +55,7 @@ function Categories({ swal }) {
     setEditedCategoryInfo(category)
     setName(category.name)
     setParentCategory(category.parentCategory?._id)
+    setProperties(category.properties)
   }
 
   function deleteCategory(category) {
@@ -96,7 +97,7 @@ function Categories({ swal }) {
 
     setProperties(prev => {
       const properties = [...prev]
-      properties[index].name = newPropertyValues
+      properties[index].values = newPropertyValues
       return properties
     })
   }

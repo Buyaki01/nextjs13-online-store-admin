@@ -7,7 +7,7 @@ export async function POST(request) {
 
   await connectMongoDB()
 
-  const updatedParentCategory = parentCategory !== undefined && parentCategory !== null ? parentCategory : null
+  const updatedParentCategory = parentCategory !== undefined && parentCategory !== "" ? parentCategory : null
 
   await Category.create({ name, parentCategory: updatedParentCategory, properties })
 
@@ -30,7 +30,7 @@ export async function PUT(request) {
       name, parentCategory, _id, properties
     } = await request.json()
 
-    const updatedParentCategory = parentCategory !== undefined && parentCategory !== null ? parentCategory : null
+    const updatedParentCategory = parentCategory !== undefined && parentCategory !== "" ? parentCategory : null
 
     const updatedCategory = await Category.findByIdAndUpdate(
       _id,
