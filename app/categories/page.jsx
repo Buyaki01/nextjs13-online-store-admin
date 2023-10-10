@@ -165,7 +165,24 @@ function Categories({ swal }) {
           ))}
         </div> 
 
-        <button type="submit" className="btn btn-default">Save</button>
+        <div className="flex gap-1">
+          {editedCategoryInfo && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditedCategoryInfo(null)
+                setName('')
+                setParentCategory('')
+              }}
+              className="btn-primary"
+            >
+              Cancel
+            </button>
+          )}
+
+          <button type="submit" className="btn btn-default">Save</button>
+        </div>
+
       </form>
 
       {!editedCategoryInfo && (
