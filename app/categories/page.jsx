@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { withSwal } from 'react-sweetalert2'
 
 function Categories({ swal }) {
-  const [editCategoryInfo, setEditCategoryInfo] = useState(null)
+  const [editedCategoryInfo, setEditedCategoryInfo] = useState(null)
   const [name, setName] = useState()
   const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState([])
@@ -30,9 +30,9 @@ function Categories({ swal }) {
     e.preventDefault()
     const data = { name, parentCategory }
 
-    if (editCategoryInfo) {
-      await axios.put('/api/categories', {...data, _id: editCategoryInfo._id})
-      setEditCategoryInfo(null)
+    if (editedCategoryInfo) {
+      await axios.put('/api/categories', {...data, _id: editedCategoryInfo._id})
+      setEditedCategoryInfo(null)
     } else {
       await axios.post('/api/categories', data)
     }
@@ -42,7 +42,7 @@ function Categories({ swal }) {
   }
 
   async function editCategory(category) {
-    setEditCategoryInfo(category)
+    setEditedCategoryInfo(category)
     setName(category.name)
     setParentCategory(category.parentCategory?._id)
   }
@@ -91,11 +91,10 @@ function Categories({ swal }) {
     })
   }
 
-  function removeProperty(index) {
+  function removeProperty(indexToRemove) {
     setProperties(prev => {
-      const newProperties = [...prev]
-      return newProperties.filter((prop, propIndex) => {
-        return true
+      return [...prev].filter((prop, propIndex) => {
+        return propIndex !== indexToRemove
       })
     })
   }
@@ -104,7 +103,7 @@ function Categories({ swal }) {
     <>
       <h1>Categories</h1>
       
-      <label>{ editCategoryInfo ? `Edit Category ${editCategoryInfo.name}` : 'Create New Category' }</label>
+      <label>{ editedCategoryInfo ? `Edit Category ${editedCategoryInfo.name}` : 'Create New Category' }</label>
 
       <form onSubmit={addCategory}>
         <div className="flex gap-1">
@@ -156,8 +155,9 @@ function Categories({ swal }) {
               />
 
               <button
+                type="button"
                 className="bg-slate-500 py-1 px-4 text-white"
-                onClick={removeProperty(index)}
+                onClick={() => removeProperty(index)}
               >
                 Remove
               </button>
@@ -168,51 +168,53 @@ function Categories({ swal }) {
         <button type="submit" className="btn btn-default">Save</button>
       </form>
 
-      <table className="basic mt-4">
-        <thead>
-          <tr>
-            <td>Category Name</td>
-            <td>Parent Category</td>
-          </tr>
-        </thead>
+      {!editedCategoryInfo && (
+        <table className="basic mt-4">
+          <thead>
+            <tr>
+              <td>Category Name</td>
+              <td>Parent Category</td>
+            </tr>
+          </thead>
 
-        <tbody>
+          <tbody>
 
-        {loading 
-          ? (
-              <p className="loading-categories mt-3 text-xl text-center">Loading...</p>
-            ) 
-          : (
-            categories.length > 0 
-              ? (categories.map(category => (
-                  <tr key={category._id}>
-                    <td>{category.name}</td>
-                    <td>{category?.parentCategory?.name}</td>
-                    <td>
-                      <button 
-                        onClick={() => editCategory(category)} 
-                        className="btn-primary mr-1"
-                      >
-                        Edit
-                      </button>
-
-                      <button 
-                        className="btn-primary"
-                        onClick={() => deleteCategory(category)}
-                      >
-                        Delete
-                      </button>
-
-                    </td>
-                  </tr>
-                )))
+            {loading 
+              ? (
+                  <p className="loading-categories mt-3 text-xl text-center">Loading...</p>
+                ) 
               : (
-                <p>No categories available.</p>
+                categories.length > 0 
+                  ? (categories.map(category => (
+                      <tr key={category._id}>
+                        <td>{category.name}</td>
+                        <td>{category?.parentCategory?.name}</td>
+                        <td>
+                          <button 
+                            onClick={() => editCategory(category)} 
+                            className="btn-primary mr-1"
+                          >
+                            Edit
+                          </button>
+
+                          <button 
+                            className="btn-primary"
+                            onClick={() => deleteCategory(category)}
+                          >
+                            Delete
+                          </button>
+
+                        </td>
+                      </tr>
+                    )))
+                  : (
+                    <p>No categories available.</p>
+                  )
               )
-          )
-        }
-        </tbody>
-      </table>
+            }
+          </tbody>
+        </table>
+      )}
     </>
   )
 }

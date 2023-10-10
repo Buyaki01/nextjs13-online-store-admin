@@ -16,6 +16,7 @@ export default function EditProduct() {
   const [newSelectedCategory, setNewSelectedCategory] = useState('')
   const [isUploading, setIsUploading] = useState(false)
   const [product, setProduct] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams()
 
@@ -35,6 +36,7 @@ export default function EditProduct() {
           setNewPrice(productData.price)
           setNewUploadedImagePaths(productData.uploadedImagePaths)
           setNewSelectedCategory(productData.selectedCategory)
+          setIsLoading(false)
         }
       } catch (error) {
         console.error("Error fetching product:", error)
@@ -111,77 +113,85 @@ export default function EditProduct() {
 
   return (
     <form onSubmit={updateProduct}>
-      <h1>Edit Product</h1>
-      <label>Product name</label>
-      <input 
-        type="text" 
-        placeholder="product name" 
-        value={newProductName}
-        onChange={e => setNewProductName(e.target.value)}
-      />
+      {isLoading 
+        ? ( <h1 className="mt-3 text-xl text-center">Loading...</h1> ) 
+        : ( 
+          <>
+            <h1>Edit Product</h1>
 
-      <label>Category</label>
-      <select
-        value={newSelectedCategory}
-        onChange={e => setNewSelectedCategory(e.target.value)}
-      >
-        <option>Uncategorized</option>
-        {categories.length > 0 && categories.map(category => (
-          <option key={category._id} value={category._id}>{category.name}</option>
-        ))}
-      </select>
+            <label>Product name</label>
+            <input 
+              type="text" 
+              placeholder="product name" 
+              value={newProductName}
+              onChange={e => setNewProductName(e.target.value)}
+            />
 
-      <label>Photos</label>
-      <div className="mb-3 flex flex-wrap gap-1">
-        
-        <ReactSortable 
-          list={newUploadedImagePaths} 
-          className="flex flex-wrap gap-1"
-          setList={updateImagePathsOrder}>
-          {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
-            <div key={imagePath} className="h-24">
-              <img src={imagePath} alt="" className="rounded-lg" />
+            <label>Category</label>
+            <select
+              value={newSelectedCategory}
+              onChange={e => setNewSelectedCategory(e.target.value)}
+            >
+              <option>Uncategorized</option>
+              {categories.length > 0 && categories.map(category => (
+                <option key={category._id} value={category._id}>{category.name}</option>
+              ))}
+            </select>
+
+            <label>Photos</label>
+            <div className="mb-3 flex flex-wrap gap-1">
+              
+              <ReactSortable 
+                list={newUploadedImagePaths} 
+                className="flex flex-wrap gap-1"
+                setList={updateImagePathsOrder}>
+                {!!newUploadedImagePaths?.length && newUploadedImagePaths.map(imagePath => (
+                  <div key={imagePath} className="h-24">
+                    <img src={imagePath} alt="" className="rounded-lg" />
+                  </div>
+                ))}
+              </ReactSortable>
+
+              {isUploading && (
+                <div className="h-24 flex items-center"> 
+                  <Spinner />
+                </div>
+              )}
+
+              <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                <div>Upload</div>
+                <input type="file" onChange={uploadPhotos} multiple className="hidden" />
+              </label>
+
             </div>
-          ))}
-        </ReactSortable>
 
-        {isUploading && (
-          <div className="h-24 flex items-center"> 
-            <Spinner />
-          </div>
-        )}
+            <label>Description</label>
+            <textarea 
+              placeholder="description"
+              value={newDescription}
+              onChange={e => setNewDescription(e.target.value)}
+            />
 
-        <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-          </svg>
-          <div>Upload</div>
-          <input type="file" onChange={uploadPhotos} multiple className="hidden" />
-        </label>
+            <label>Price (in USD)</label>
+            <input 
+              type="number" 
+              placeholder="price"
+              value={newPrice}
+              onChange={e => setNewPrice(e.target.value)}
+            />
 
-      </div>
-
-      <label>Description</label>
-      <textarea 
-        placeholder="description"
-        value={newDescription}
-        onChange={e => setNewDescription(e.target.value)}
-      />
-
-      <label>Price (in USD)</label>
-      <input 
-        type="number" 
-        placeholder="price"
-        value={newPrice}
-        onChange={e => setNewPrice(e.target.value)}
-      />
-
-      <button 
-        type="submit"
-        className="btn-default"
-      >
-        Save
-      </button>
+            <button 
+              type="submit"
+              className="btn-default"
+            >
+              Save
+            </button>
+          </>
+        )
+      }
     </form>
   )
 }
