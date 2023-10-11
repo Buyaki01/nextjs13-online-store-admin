@@ -71,8 +71,10 @@ const Admins = () => {
                   ))
                 ) 
               : (
-                  <h1>No Admin available.</h1>
-                )
+                <tr>
+                  <td colSpan="5">No Admin available.</td>
+                </tr>
+              )
             }
           </tbody>
         </table>

@@ -67,8 +67,10 @@ export default function Products() {
                   ))
                 ) 
               : (
-                  <h1>No products available.</h1>
-                )
+                <tr>
+                  <td colSpan="5">No Products available.</td>
+                </tr>
+              )
             }
           </tbody>
         </table>

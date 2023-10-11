@@ -12,11 +12,11 @@ export async function PUT(request, { params }) {
 
     await isAdminRequest()
 
-    const { email, firstname, lastname, phoneNumber } = await request.json()
+    const { firstname, lastname, email, phoneNumber } = await request.json()
 
     const updatedAdmin = await Admin.findByIdAndUpdate(
       id,
-      { email, firstname, lastname, phoneNumber },
+      { firstname, lastname, email, phoneNumber },
       { new: true }
     )
 
@@ -49,8 +49,8 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ message: "Admin deleted successfully" }, { status: 200 })
 
   } catch (error) {
-    console.error("Error deleting product:", error)
-    return NextResponse.json({ message: "Error deleting product" }, { status: 500 })
+    console.error("Error deleting admin:", error)
+    return NextResponse.json({ message: "Error deleting admin" }, { status: 500 })
   }
 
 }
