@@ -12,11 +12,11 @@ export async function PUT(request, { params }) {
 
     await isAdminRequest()
 
-    const { newEmail: email } = await request.json()
+    const { email, firstname, lastname, phoneNumber } = await request.json()
 
     const updatedAdmin = await Admin.findByIdAndUpdate(
       id,
-      { email },
+      { email, firstname, lastname, phoneNumber },
       { new: true }
     )
 

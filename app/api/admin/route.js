@@ -4,7 +4,7 @@ import { Admin } from "../../../models/Admin"
 import { isAdminRequest } from "../auth/[...nextauth]/route"
 
 export async function POST(request) {
-  const { email } = await request.json()
+  const { email, firstname, lastname, phoneNumber } = await request.json()
 
   await connectMongoDB()
 
