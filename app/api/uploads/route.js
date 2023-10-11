@@ -1,9 +1,11 @@
 import { writeFile } from 'fs/promises'
 import { NextResponse } from 'next/server'
 import { join } from 'path'
+import connectMongoDB from "../../../lib/mongoose"
 import { isAdminRequest } from "../auth/[...nextauth]/route"
 
 export async function POST(request) {
+  await connectMongoDB()
   await isAdminRequest()
 
   const data = await request.formData()
