@@ -68,7 +68,7 @@ export default function Products() {
                 ) 
               : (
                 <tr>
-                  <td colSpan="5">No Products available.</td>
+                  <td colSpan="5" className="text-center">No Products available.</td>
                 </tr>
               )
             }

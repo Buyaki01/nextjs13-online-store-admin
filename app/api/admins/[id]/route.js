@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
-import { Admin } from "../../../../models/Admin"
+import Admin from "../../../../models/Admin"
 import { isAdminRequest } from "../../auth/[...nextauth]/route"
 
 export async function PUT(request, { params }) {

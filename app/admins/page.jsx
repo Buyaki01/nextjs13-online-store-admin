@@ -72,7 +72,7 @@ const Admins = () => {
                 ) 
               : (
                 <tr>
-                  <td colSpan="5">No Admin available.</td>
+                  <td colSpan="5" className="text-center">No Admin available.</td>
                 </tr>
               )
             }
