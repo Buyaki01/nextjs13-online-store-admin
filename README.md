@@ -74,6 +74,6 @@ I would like to acknowledge the following sources and individuals for their cont
 - Inspiration: [GTCoding](https://www.youtube.com/@GTCoding) for tutorials on NextJs 13, CRUD Operations 
 - Inspiration: [Hamed Bahram](https://www.youtube.com/@hamedbahram) for tutorials on NextJs 13, Next-Auth
 - Inspiration: [Coding with Dawid](https://www.youtube.com/@CodingWithDawid)
-- Inspiration: [Ethan Mick](https://www.youtube.com/@ethan_mick) for tutorial on File Upload in Next.js 13 App Directory with NO libraries!
+- Inspiration: [Ethan Mick](https://www.youtube.com/@ethan_mick) for tutorial on File/Image Upload in Next.js 13 App Directory with NO libraries!
 
 These sources have been instrumental in shaping and enhancing the features of this project.

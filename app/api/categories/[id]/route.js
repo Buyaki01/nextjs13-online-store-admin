@@ -2,12 +2,15 @@ import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
 import Category from "../../../../models/Category"
 import { Product } from "../../../../models/Product"
+import { isAdminRequest } from "../../auth/[...nextauth]/route"
 
 export async function DELETE(request, { params }) {
   const { id } = params
 
   try {
     await connectMongoDB()
+
+    await isAdminRequest()
 
     const productsToUpdate = await Product.find({ selectedCategory: id })
 

@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../lib/mongoose"
 import Category from "../../../models/Category"
+import { isAdminRequest } from "../auth/[...nextauth]/route"
 
 export async function POST(request) {
   const { name, parentCategory, properties } = await request.json()
 
   await connectMongoDB()
+
+  await isAdminRequest()
 
   const updatedParentCategory = parentCategory !== undefined && parentCategory !== "" ? parentCategory : null
 
@@ -15,7 +18,11 @@ export async function POST(request) {
 }
 
 export async function GET() {
+
   await connectMongoDB()
+
+  await isAdminRequest()
+
   const categories = await Category.find().populate('parentCategory')
 
   return NextResponse.json({ categories })
@@ -25,6 +32,8 @@ export async function PUT(request) {
  
   try {
     await connectMongoDB()
+
+    await isAdminRequest()
 
     const {
       name, parentCategory, _id, properties
