@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
 import { Product } from "../../../../models/Product"
+import { isAdminRequest } from "../../auth/[...nextauth]/route"
 
 export async function GET(request, { params }) {
   const { id } = params
   await connectMongoDB()
+  await isAdminRequest()
   const product = await Product.findOne({ _id: id })
   
   return NextResponse.json({ product }, { status: 200 })
@@ -17,6 +19,8 @@ export async function PUT(request, { params }) {
   try {
     // Connect to the MongoDB database
     await connectMongoDB()
+
+    await isAdminRequest()
 
     // Extract the data from the request body
     const {
@@ -52,6 +56,8 @@ export async function DELETE(request, { params }) {
 
   try {
     await connectMongoDB()
+
+    await isAdminRequest()
 
     const deletedProduct = await Product.findByIdAndDelete(id)
 

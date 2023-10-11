@@ -1,8 +1,11 @@
 import { writeFile } from 'fs/promises'
 import { NextResponse } from 'next/server'
 import { join } from 'path'
+import { isAdminRequest } from "../auth/[...nextauth]/route"
 
 export async function POST(request) {
+  await isAdminRequest()
+
   const data = await request.formData()
 
   //'uploads' is from the client side
