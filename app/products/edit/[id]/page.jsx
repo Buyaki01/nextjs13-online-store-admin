@@ -15,6 +15,7 @@ export default function EditProduct() {
   const [categories, setCategories] = useState([])
   const [newSelectedCategory, setNewSelectedCategory] = useState('')
   const [newProperties, setNewProperties] = useState({})
+  const [editIsFeatured, setEditIsFeatured] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [product, setProduct] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -39,6 +40,7 @@ export default function EditProduct() {
           setNewUploadedImagePaths(productData.uploadedImagePaths)
           setNewSelectedCategory(productData.selectedCategory)
           setNewProperties(productData.properties || {})
+          setEditIsFeatured(productData.isFeatured)
           setIsLoading(false)
         }
       } catch (error) {
@@ -70,6 +72,7 @@ export default function EditProduct() {
       newUploadedImagePaths,
       newSelectedCategory,
       newProperties,
+      editIsFeatured
     }
 
     try {
@@ -238,6 +241,17 @@ export default function EditProduct() {
               value={newPrice}
               onChange={e => setNewPrice(e.target.value)}
             />
+
+            <label className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                className="h-6 w-6"
+                checked={editIsFeatured}
+                onChange={(e) => setEditIsFeatured(e.target.checked)}
+              />
+    
+              <span className="whitespace-nowrap" style={{ marginTop: "-10px" }}>Featured Product</span>
+            </label>
 
             <button 
               type="submit"
