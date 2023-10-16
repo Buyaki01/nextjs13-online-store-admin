@@ -17,6 +17,7 @@ export default function NewProduct() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [properties, setProperties] = useState({})
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [isFeatured, setIsFeatured] = useState(false)
 
   const router = useRouter()
 
@@ -34,7 +35,7 @@ export default function NewProduct() {
 
     e.preventDefault()
 
-    const data = { productName, description, price, uploadedImagePaths, selectedCategory, properties } // Sending selectedCategory as an id for Category because our value for option is category._id
+    const data = { productName, description, price, uploadedImagePaths, selectedCategory, properties, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
 
     await axios.post('/api/products', data)
 
@@ -182,9 +183,20 @@ export default function NewProduct() {
         onChange={e => setPrice(e.target.value)}
       />
 
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          className="h-6 w-6"
+          checked={isFeatured}
+          onChange={(e) => setIsFeatured(e.target.checked)}
+        />
+  
+        <span className="whitespace-nowrap" style={{ marginTop: "-10px" }}>Featured Product</span>
+      </label>
+
       <button 
         type="submit"
-        className="btn-default"
+        className="btn-default mt-3"
       >
         Save
       </button>

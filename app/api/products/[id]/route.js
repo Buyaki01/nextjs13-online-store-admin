@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
-import { Product } from "../../../../models/Product"
+import { Product } from "../../../../models/product"
 
 export async function GET(request, { params }) {
   const { id } = params
@@ -25,13 +25,14 @@ export async function PUT(request, { params }) {
       newPrice: price,
       newUploadedImagePaths: uploadedImagePaths,
       newSelectedCategory: selectedCategory,
-      newProperties: properties
+      newProperties: properties,
+      editIsFeatured: isFeatured
     } = await request.json()
 
     // Use the Product model to find and update the product by its ID
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { productName, description, price, uploadedImagePaths, selectedCategory, properties },
+      { productName, description, price, uploadedImagePaths, selectedCategory, properties, isFeatured },
       { new: true }
     )
 
