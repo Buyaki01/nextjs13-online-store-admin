@@ -1,7 +1,7 @@
-# NextJs 13 Ecommerce Admin
+# NextJs 13 Online Store Admin
 
 ## Overview
-This is an ecommerce app for administrators to efficiently manage their customers' ecommerce activities.
+This is an online store app for administrators to efficiently manage their customers' online store activities.
 
 ## Technologies Used
 - **NextJs 13**
@@ -15,12 +15,12 @@ To get started with this app, follow these steps:
 
 1. Clone this repository: 
     ```bash 
-    git clone git@github.com:Buyaki01/nextjs13-ecommerce-admin.git
+    git clone git@github.com:Buyaki01/nextjs13-online-store-admin.git
     ```
 
 2. Open the repository: 
     ```bash 
-    cd nextjs13-ecommerce-admin
+    cd nextjs13-online-store-admin
     ```
 
 3. Install dependencies: 
@@ -60,7 +60,7 @@ Here are the environment variables you need to configure in your `.env` file:
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/Buyaki01/nextjs13-ecommerce-admin/issues)
+Feel free to check the [issues page](https://github.com/Buyaki01/nextjs13-online-store-admin/issues)
 
 ## Show your support
 
