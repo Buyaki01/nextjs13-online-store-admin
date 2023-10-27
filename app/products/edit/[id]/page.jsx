@@ -20,6 +20,7 @@ export default function EditProduct() {
   const [product, setProduct] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [uploadedImagesChanged, setUploadedImagesChanged] = useState(false)
 
   const params = useParams()
 
@@ -103,7 +104,9 @@ export default function EditProduct() {
         const response = await axios.post('/api/uploads', data)
         
         setNewUploadedImagePaths(prevImagePaths => {
-          return [...prevImagePaths, ...response.data.uploadedImagePaths]
+          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImageURLs]
+          setUploadedImagesChanged(true)
+          return newImagePaths
         })
 
         setIsUploading(false)
