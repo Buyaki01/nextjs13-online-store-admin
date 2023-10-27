@@ -20,23 +20,19 @@ export async function POST(request) {
     // Customize the filename before uploading (e.g., add a timestamp)
     const timestamp = new Date().getTime()
     const newFilename = `photo${timestamp}.${imageType}`
-    console.log(newFilename)
 
     // Create a FormData object to upload the image to ImgBB with the new filename
     const formData = new FormData()
     formData.append('image', blob, newFilename )
 
     try {
-      const imgbbResponse = await axios('https://api.imgbb.com/1/upload?key=4ceaa761d1a0ae3762060352ac713933', formData)
-      console.log(imgbbResponse.data)
+      const imgbbResponse = await axios.post('https://api.imgbb.com/1/upload?key=4ceaa761d1a0ae3762060352ac713933', formData)
       if (imgbbResponse.data.status === 200) {
-        uploadedImageURLs.push(imgbbResponse.data.data.url) // URL of the uploaded image on ImgBB
+        uploadedImageURLs.push(imgbbResponse.data?.data?.url) // URL of the uploaded image on ImgBB
       } else {
-        //console.error('Error uploading the file to ImgBB:', imgbbResponse.data.error.message)
         return NextResponse.json({ message: "Failed to upload the file to ImgBB" })
       }
     } catch (error) {
-      //console.error('Error uploading the file to ImgBB:', error)
       return NextResponse.json({ message: "Failed to upload the file to ImgBB" })
     }
   }

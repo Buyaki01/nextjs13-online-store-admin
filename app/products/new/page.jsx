@@ -18,6 +18,7 @@ export default function NewProduct() {
   const [properties, setProperties] = useState({})
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
   const [isFeatured, setIsFeatured] = useState(false)
+  const [uploadedImagesChanged, setUploadedImagesChanged] = useState(false)
 
   const router = useRouter()
 
@@ -56,10 +57,11 @@ export default function NewProduct() {
         }
   
         const response = await axios.post('/api/uploads', data)
-        console.log(data)
 
         setUploadedImagePaths(prevImagePaths => {
-          return [...prevImagePaths, ...response.data.uploadedImagePaths] //The uploadedImagePaths in response.data.uploadedImagePaths is coming from the server
+          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImageURLs]
+          setUploadedImagesChanged(true) // Set the flag to indicate image changes
+          return newImagePaths
         })
         
         setIsUploading(false)
