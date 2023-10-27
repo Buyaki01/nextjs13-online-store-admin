@@ -56,6 +56,7 @@ export default function NewProduct() {
         }
   
         const response = await axios.post('/api/uploads', data)
+        console.log(data)
 
         setUploadedImagePaths(prevImagePaths => {
           return [...prevImagePaths, ...response.data.uploadedImagePaths] //The uploadedImagePaths in response.data.uploadedImagePaths is coming from the server
