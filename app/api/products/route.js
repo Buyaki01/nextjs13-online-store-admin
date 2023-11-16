@@ -15,10 +15,7 @@ export async function POST(request) {
 export async function GET() {
   await connectMongoDB()
 
-  console.log("In the products GET method")
-
   const products = await Product.find().populate('selectedCategory')
-  console.log("These are the products", products)
 
   return NextResponse.json({ products })
 }
