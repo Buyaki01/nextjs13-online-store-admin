@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../lib/mongoose"
-import Category from "../../../models/Category"
+import Category from "../../../models/category"
 
 export async function POST(request) {
   const { name, parentCategory, properties } = await request.json()

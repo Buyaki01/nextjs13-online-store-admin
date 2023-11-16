@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import connectMongoDB from "../../../lib/mongoose"
-import { Product } from "../../../models/product"
+import connectMongoDB from '../../../lib/mongoose'
+import Product from '../../../models/product'
 
 export async function POST(request) {
   const { productName, description, price, uploadedImagePaths, selectedCategory, properties, isFeatured } = await request.json()
@@ -14,7 +14,8 @@ export async function POST(request) {
 
 export async function GET() {
   await connectMongoDB()
-  const products = await Product.find()
+
+  const products = await Product.find().populate('selectedCategory')
 
   return NextResponse.json({ products })
 }

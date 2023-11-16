@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
-import Category from "../../../../models/Category"
+import Category from "../../../../models/category"
 import { Product } from "../../../../models/Product"
 
 export async function DELETE(request, { params }) {
