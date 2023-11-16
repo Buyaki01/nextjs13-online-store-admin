@@ -217,7 +217,7 @@ function Categories({ swal }) {
             <tr>
               <td>Category Name</td>
               <td>Parent Category</td>
-              <td></td>
+              <td>Actions</td>
             </tr>
           </thead>
 
@@ -252,7 +252,11 @@ function Categories({ swal }) {
                       </tr>
                     )))
                   : (
-                    <p>No categories available.</p>
+                    <tr>
+                      <td colSpan="3" className="px-3 py-2 text-center">
+                        <p className="text-lg text-gray-600">No categories available.</p>
+                      </td>
+                    </tr>
                   )
               )
             }

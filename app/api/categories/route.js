@@ -16,6 +16,7 @@ export async function POST(request) {
 
 export async function GET() {
   await connectMongoDB()
+  
   const categories = await Category.find().populate('parentCategory')
 
   return NextResponse.json({ categories })
