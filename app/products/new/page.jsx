@@ -10,13 +10,18 @@ export default function NewProduct() {
 
   const [productName, setProductName] = useState('')
   const [description, setDescription] = useState('')
-  const [price, setPrice] = useState('')
+  const [regularPrice, setRegularPrice] = useState('')
+  const [productPrice, setProductPrice] = useState('')
   const [uploadedImagePaths, setUploadedImagePaths] = useState([])
   const [isUploading, setIsUploading] = useState(false)
   const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
+  const [stockQuantity, setStockQuantity] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedBrand, setSelectedBrand] = useState('')
   const [properties, setProperties] = useState({})
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [isLoadingBrands, setIsLoadingBrands] = useState(true)
   const [isFeatured, setIsFeatured] = useState(false)
   const [uploadedImagesChanged, setUploadedImagesChanged] = useState(false)
 
@@ -32,11 +37,21 @@ export default function NewProduct() {
     fetchCategories()
   }, [])
 
+  useEffect(() => {
+    const fetchBrands = async () => {
+      const response = await axios.get('/api/brands')
+      setBrands(response.data.brands)
+      setIsLoadingBrands(false)
+    }
+
+    fetchBrands()
+  }, [])
+
   async function createProduct(e) {
 
     e.preventDefault()
 
-    const data = { productName, description, price, uploadedImagePaths, selectedCategory, properties, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
+    const data = { productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
 
     await axios.post('/api/products', data)
 
@@ -128,10 +143,11 @@ export default function NewProduct() {
         <div key={p.name} className="">
           <label>{p.name[0].toUpperCase()+p.name.substring(1)}</label>
           <div>
-            <select value={properties[p.name]}
-                    onChange={ev =>
-                      setProductProp(p.name,ev.target.value)
-                    }
+            <select 
+              value={properties[p.name]}
+              onChange={ev =>
+                setProductProp(p.name,ev.target.value)
+              }
             >
               {p.values.map(v => (
                 <option key={v} value={v}>{v}</option>
@@ -140,6 +156,24 @@ export default function NewProduct() {
           </div>
         </div>
       ))}
+
+    <label>Brand</label>
+    {isLoadingBrands 
+      ? (
+          <p className="mb-1">Loading brands...</p>
+        )
+      : (
+          <select
+            value={selectedBrand}
+            onChange={e => setSelectedBrand(e.target.value)}
+          >
+            <option>No Brand</option>
+            {brands.length > 0 && brands.map(brand => (
+              <option key={brand._id} value={brand._id}>{brand.brandName}</option>
+            ))}
+          </select>
+        ) 
+    }
 
       <label>Photos</label>
       <div className="mb-3 flex flex-wrap gap-1">
@@ -178,12 +212,28 @@ export default function NewProduct() {
         onChange={e => setDescription(e.target.value)}
       />
 
-      <label>Price (in USD)</label>
+      <label>Regular Price (in USD)</label>
       <input 
         type="number" 
-        placeholder="price"
-        value={price}
-        onChange={e => setPrice(e.target.value)}
+        placeholder="Regular Price"
+        value={regularPrice}
+        onChange={e => setRegularPrice(e.target.value)}
+      />
+
+      <label>Product Price (in USD)</label>
+      <input 
+        type="number" 
+        placeholder="Product Price"
+        value={productPrice}
+        onChange={e => setProductPrice(e.target.value)}
+      />
+
+      <label>Quantity in Stock</label>
+      <input
+        type="number"
+        placeholder="quantity in stock"
+        value={stockQuantity}
+        onChange={(e) => setStockQuantity(e.target.value)}
       />
 
       <label className="flex items-center gap-2">

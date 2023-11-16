@@ -26,8 +26,6 @@ export default function Products() {
       
   return (
     <>
-      
-
       {loading 
       ? (
           <h1 className="mt-3 text-xl text-center">Loading...</h1>
