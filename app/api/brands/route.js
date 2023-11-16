@@ -16,9 +16,7 @@ export async function POST(request) {
 
   const userId = user._id
 
-  const updatedParentCategory = parentCategory !== undefined && parentCategory !== "" ? parentCategory : null
-
-  await Brand.create({ user: userId, brandName, parentCategory: updatedParentCategory })
+  await Brand.create({ user: userId, brandName, parentCategory })
 
   return NextResponse.json({ message: "Brand Added Successfully" }, { status: 201 })
 }

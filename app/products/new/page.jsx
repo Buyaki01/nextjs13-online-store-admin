@@ -16,7 +16,7 @@ export default function NewProduct() {
   const [isUploading, setIsUploading] = useState(false)
   const [categories, setCategories] = useState([])
   const [brands, setBrands] = useState([])
-  const [stockQuantity, setStockQuantity] = useState('')
+  const [stockQuantity, setStockQuantity] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedBrand, setSelectedBrand] = useState('')
   const [properties, setProperties] = useState({})
@@ -167,7 +167,7 @@ export default function NewProduct() {
             value={selectedBrand}
             onChange={e => setSelectedBrand(e.target.value)}
           >
-            <option>No Brand</option>
+            <option>No brand yet</option>
             {brands.length > 0 && brands.map(brand => (
               <option key={brand._id} value={brand._id}>{brand.brandName}</option>
             ))}
