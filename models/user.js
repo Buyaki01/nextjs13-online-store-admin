@@ -13,8 +13,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  roles: {
+    type: [String],
+    default: ['User'],
+  },
 },
   { timestamps: true }
 )
 
-export default models.User || model('User', UserSchema)
+const User = models.User || model('User', UserSchema)
+
+export default User
