@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Spinner from "../../components/Spinner"
 import { ReactSortable } from "react-sortablejs"
+import { useSession } from "next-auth/react"
 
 export default function NewProduct() {
 
@@ -26,6 +27,7 @@ export default function NewProduct() {
   const [uploadedImagesChanged, setUploadedImagesChanged] = useState(false)
 
   const router = useRouter()
+  const { data: session } = useSession()
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -51,7 +53,9 @@ export default function NewProduct() {
 
     e.preventDefault()
 
-    const data = { productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
+    const userEmail = session?.user?.email
+
+    const data = { userEmail, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, stockQuantity, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
 
     await axios.post('/api/products', data)
 
@@ -74,7 +78,7 @@ export default function NewProduct() {
         const response = await axios.post('/api/uploads', data)
 
         setUploadedImagePaths(prevImagePaths => {
-          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImageURLs]
+          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImagePaths]
           setUploadedImagesChanged(true) // Set the flag to indicate image changes
           return newImagePaths
         })

@@ -109,7 +109,7 @@ export default function EditProduct() {
         const response = await axios.post('/api/uploads', data)
         
         setNewUploadedImagePaths(prevImagePaths => {
-          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImageURLs]
+          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImagePaths]
           setUploadedImagesChanged(true)
           return newImagePaths
         })
