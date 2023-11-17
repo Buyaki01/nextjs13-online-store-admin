@@ -5,21 +5,28 @@ import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Spinner from '../../../components/Spinner'
 import { ReactSortable } from "react-sortablejs"
+import { useSession } from "next-auth/react"
 
 export default function EditProduct() {
+  const { data: session } = useSession()
 
   const [newProductName, setNewProductName] = useState('')
   const [newDescription, setNewDescription] = useState('')
-  const [newPrice, setNewPrice] = useState('')
+  const [newRegularPrice, setNewRegularPrice] = useState('')
+  const [newProductPrice, setNewProductPrice] = useState('')
+  const [brands, setBrands] = useState([])
+  const [newStockQuantity, setNewStockQuantity] = useState(1)
   const [newUploadedImagePaths, setNewUploadedImagePaths] = useState([])
   const [categories, setCategories] = useState([])
   const [newSelectedCategory, setNewSelectedCategory] = useState('')
+  const [newSelectedBrand, setNewSelectedBrand] = useState('')
   const [newProperties, setNewProperties] = useState({})
   const [editIsFeatured, setEditIsFeatured] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [product, setProduct] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [isLoadingBrands, setIsLoadingBrands] = useState(true)
   const [uploadedImagesChanged, setUploadedImagesChanged] = useState(false)
 
   const params = useParams()
@@ -37,9 +44,12 @@ export default function EditProduct() {
           setProduct(productData)
           setNewProductName(productData.productName)
           setNewDescription(productData.description)
-          setNewPrice(productData.price)
+          setNewProductPrice(productData.productPrice)
+          setNewRegularPrice(productData.regularPrice)
           setNewUploadedImagePaths(productData.uploadedImagePaths)
           setNewSelectedCategory(productData.selectedCategory)
+          setNewSelectedBrand(productData.brand)
+          setNewStockQuantity(productData.stockQuantity)
           setNewProperties(productData.properties || {})
           setEditIsFeatured(productData.isFeatured)
           setIsLoading(false)
@@ -62,16 +72,32 @@ export default function EditProduct() {
     fetchCategories()
   }, [])
 
+  useEffect(() => {
+    const fetchBrands = async () => {
+      const response = await axios.get('/api/brands')
+      setBrands(response.data.brands)
+      setIsLoadingBrands(false)
+    }
+
+    fetchBrands()
+  }, [])
+
   const updateProduct = async (e) => {
     e.preventDefault()
 
+    const userEmail = session?.user?.email
+
     // Create an object with the updated data
     const updatedProduct = {
+      userEmail,
       newProductName,
       newDescription,
-      newPrice,
+      newRegularPrice,
+      newProductPrice,
       newUploadedImagePaths,
       newSelectedCategory,
+      newSelectedBrand,
+      newStockQuantity,
       newProperties,
       editIsFeatured
     }
@@ -104,7 +130,7 @@ export default function EditProduct() {
         const response = await axios.post('/api/uploads', data)
         
         setNewUploadedImagePaths(prevImagePaths => {
-          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImageURLs]
+          const newImagePaths = [...prevImagePaths, ...response.data.uploadedImagePaths]
           setUploadedImagesChanged(true)
           return newImagePaths
         })
@@ -198,7 +224,26 @@ export default function EditProduct() {
                   </select>
                 </div>
               </div>
-            ))}
+            ))
+          }
+
+          <label>Brand</label>
+          {isLoadingBrands 
+            ? (
+                <p className="mb-1">Loading brands...</p>
+              )
+            : (
+                <select
+                  value={newSelectedBrand}
+                  onChange={e => setNewSelectedBrand(e.target.value)}
+                >
+                  <option>No brand yet</option>
+                  {brands.length > 0 && brands.map(brand => (
+                    <option key={brand._id} value={brand._id}>{brand.brandName}</option>
+                  ))}
+                </select>
+              ) 
+          }
 
             <label>Photos</label>
             <div className="mb-3 flex flex-wrap gap-1">
@@ -237,12 +282,28 @@ export default function EditProduct() {
               onChange={e => setNewDescription(e.target.value)}
             />
 
-            <label>Price (in USD)</label>
+            <label>Regular Price (in USD)</label>
             <input 
               type="number" 
-              placeholder="price"
-              value={newPrice}
-              onChange={e => setNewPrice(e.target.value)}
+              placeholder="Regular Price"
+              value={newRegularPrice}
+              onChange={e => setNewRegularPrice(e.target.value)}
+            />
+
+            <label>Product Price (in USD)</label>
+            <input 
+              type="number" 
+              placeholder="Product Price"
+              value={newProductPrice}
+              onChange={e => setNewProductPrice(e.target.value)}
+            />
+
+            <label>Quantity in Stock</label>
+            <input
+              type="number"
+              placeholder="quantity in stock"
+              value={newStockQuantity}
+              onChange={(e) => setNewStockQuantity(e.target.value)}
             />
 
             <label className="flex items-center gap-1">

@@ -7,7 +7,6 @@ import { withSwal } from 'react-sweetalert2'
 function Categories({ swal }) {
   const [editedCategoryInfo, setEditedCategoryInfo] = useState(null)
   const [name, setName] = useState()
-  const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [properties, setProperties] = useState([])
@@ -29,8 +28,7 @@ function Categories({ swal }) {
   async function addCategory(e) {
     e.preventDefault()
     const data = { 
-      name, 
-      parentCategory, 
+      name,
       properties: properties.map(property => ({
         name: property.name,
         values: property.values.split(','),
@@ -45,7 +43,6 @@ function Categories({ swal }) {
     }
 
     setName('')
-    setParentCategory('')
     setProperties([])
 
     fetchCategories()
@@ -54,7 +51,6 @@ function Categories({ swal }) {
   async function editCategory(category) {
     setEditedCategoryInfo(category)
     setName(category.name)
-    setParentCategory(category.parentCategory?._id)
     setProperties(category.properties.map(({ name, values }) => ({ 
       name,
       values: values.join(',')
@@ -138,17 +134,6 @@ function Categories({ swal }) {
             value={name}
             onChange={e => setName(e.target.value)}
           /> 
-
-          <select 
-            value={parentCategory}
-            onChange={e => setParentCategory(e.target.value)}
-          >
-            <option value="0">No parent category</option>
-
-            {categories.length > 0 && categories.map(category => (
-              <option key={category._id} value={category._id}>{category.name}</option>
-            ))}
-          </select>
         </div>
 
         <div className="mb-2">
@@ -197,7 +182,6 @@ function Categories({ swal }) {
               onClick={() => {
                 setEditedCategoryInfo(null)
                 setName('')
-                setParentCategory('')
                 setProperties([])
               }}
               className="btn-primary"
@@ -216,8 +200,7 @@ function Categories({ swal }) {
           <thead>
             <tr>
               <td>Category Name</td>
-              <td>Parent Category</td>
-              <td></td>
+              <td>Actions</td>
             </tr>
           </thead>
 
@@ -232,7 +215,6 @@ function Categories({ swal }) {
                   ? (categories.map(category => (
                       <tr key={category._id}>
                         <td>{category.name}</td>
-                        <td>{category?.parentCategory?.name}</td>
                         <td>
                           <button 
                             onClick={() => editCategory(category)} 
@@ -252,7 +234,11 @@ function Categories({ swal }) {
                       </tr>
                     )))
                   : (
-                    <p>No categories available.</p>
+                    <tr>
+                      <td colSpan="3" className="px-3 py-2 text-center">
+                        <p className="text-lg text-gray-600">No categories available.</p>
+                      </td>
+                    </tr>
                   )
               )
             }
