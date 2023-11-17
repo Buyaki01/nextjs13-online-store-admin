@@ -66,7 +66,11 @@ table.basic td:first-child {
   text-overflow: ellipsis; /* Add ellipsis for long text */
 }
 
-table.basic a{
-  @apply text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1;
+.table-edit-link{
+  @apply text-white text-sm py-1 px-2 rounded-md flex gap-1 mr-1;
   background-color: rgb(146, 212, 59);
+}
+
+.table-delete-link{
+  @apply text-white text-sm py-1 px-2 rounded-md flex gap-1 mr-1 bg-red-600;
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
 import Product from "../../../../models/Product"
+import User from "../../../../models/user"
 
 export async function GET(request, { params }) {
   const { id } = params
@@ -20,19 +21,31 @@ export async function PUT(request, { params }) {
 
     // Extract the data from the request body
     const {
+      userEmail,
       newProductName: productName,
       newDescription: description,
-      newPrice: price,
+      newRegularPrice: regularPrice,
+      newProductPrice: productPrice,
       newUploadedImagePaths: uploadedImagePaths,
       newSelectedCategory: selectedCategory,
       newProperties: properties,
+      newSelectedBrand: selectedBrand,
+      newStockQuantity: stockQuantity,
       editIsFeatured: isFeatured
     } = await request.json()
+
+    const user = await User.findOne({ email: userEmail })
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 })
+    }
+
+    const userId = user._id
 
     // Use the Product model to find and update the product by its ID
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { productName, description, price, uploadedImagePaths, selectedCategory, properties, isFeatured },
+      { user: userId, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, selectedBrand, stockQuantity, properties, isFeatured },
       { new: true }
     )
 
