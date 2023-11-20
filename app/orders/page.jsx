@@ -23,7 +23,7 @@ const MyOrders = () => {
     <div className="min-h-screen flex">
       <Nav />
       <div className="bg-white flex-grow rounded-lg p-4 overflow-x-auto">
-        <h2 className="mb-3 text-center text-2xl font-bold color-[#d40d9a]">Orders</h2>
+        <h2 className="mb-3 text-center text-2xl text-[#d40d9a]">Orders</h2>
         {loading 
           ? (<div className="text-center mt-10">
               <p className="text-xl text-bold">Loading...</p>
