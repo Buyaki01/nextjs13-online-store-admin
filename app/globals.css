@@ -67,7 +67,6 @@ table.basic td:first-child {
 }
 
 .table-edit-link{
-  @apply text-white text-sm py-1 px-2 rounded-md flex gap-1 mr-1;
   background-color: rgb(146, 212, 59);
 }
 
