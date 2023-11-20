@@ -4,6 +4,7 @@ import Link from "next/link"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import Nav from "../components/Nav"
+import SearchProduct from "../components/SearchProduct"
 
 export default function Products() {
   
@@ -39,6 +40,7 @@ export default function Products() {
                   <>
                     <div className="flex justify-between">
                       <h1 className="text-lg font-bold">Products</h1>
+                      <SearchProduct />
                       <Link 
                         href={'/products/new'} 
                         className="btn-default py-1 px-2 text-white flex gap-1 w-52 whitespace-no-wrap"
