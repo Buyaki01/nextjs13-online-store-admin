@@ -26,7 +26,7 @@ const UsersPage = () => {
       <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
         {loading 
         ? (
-            <p>Loading...</p>
+            <p className="text-xl text-center">Loading...</p>
           ) 
         : (
             <>

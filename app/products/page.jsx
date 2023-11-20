@@ -37,8 +37,8 @@ export default function Products() {
             products.length > 0 
               ? (
                   <>
-                    <h1>Products</h1>
-                    <div className="flex justify-end">
+                    <div className="flex justify-between">
+                      <h1 className="text-lg font-bold">Products</h1>
                       <Link 
                         href={'/products/new'} 
                         className="btn-default py-1 px-2 text-white flex gap-1 w-52 whitespace-no-wrap"
