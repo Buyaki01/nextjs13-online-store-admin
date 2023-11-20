@@ -45,7 +45,7 @@ export async function PUT(request, { params }) {
     // Use the Product model to find and update the product by its ID
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { user: userId, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, selectedBrand, stockQuantity, properties, isFeatured },
+      { user: userId, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, brand: selectedBrand, quantityInStock: stockQuantity, properties, isFeatured },
       { new: true }
     )
 

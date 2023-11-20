@@ -213,7 +213,10 @@ function Categories({ swal }) {
               : (
                 categories.length > 0 
                   ? (categories.map(category => (
-                      <tr key={category._id}>
+                      <tr 
+                        key={category._id}
+                        className="border-t border-gray-300"
+                      >
                         <td>{category.name}</td>
                         <td className="flex gap-2">
                           <button 

@@ -15,7 +15,7 @@ export default function EditProduct() {
   const [newRegularPrice, setNewRegularPrice] = useState('')
   const [newProductPrice, setNewProductPrice] = useState('')
   const [brands, setBrands] = useState([])
-  const [newStockQuantity, setNewStockQuantity] = useState(1)
+  const [newStockQuantity, setNewStockQuantity] = useState(null)
   const [newUploadedImagePaths, setNewUploadedImagePaths] = useState([])
   const [categories, setCategories] = useState([])
   const [newSelectedCategory, setNewSelectedCategory] = useState('')
@@ -49,7 +49,7 @@ export default function EditProduct() {
           setNewUploadedImagePaths(productData.uploadedImagePaths)
           setNewSelectedCategory(productData.selectedCategory)
           setNewSelectedBrand(productData.brand)
-          setNewStockQuantity(productData.stockQuantity)
+          setNewStockQuantity(productData.quantityInStock)
           setNewProperties(productData.properties || {})
           setEditIsFeatured(productData.isFeatured)
           setIsLoading(false)
@@ -304,7 +304,7 @@ export default function EditProduct() {
               placeholder="quantity in stock"
               value={newStockQuantity}
               onChange={(e) => setNewStockQuantity(e.target.value)}
-            />
+            /> 
 
             <label className="flex items-center gap-1">
               <input
