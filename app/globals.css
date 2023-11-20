@@ -6,10 +6,6 @@ img{
   max-height: 100%;
 }
 
-.admin-panel-container {
-  background-color: rgb(146, 212, 59);
-}
-
 input, textarea, select{
   @apply border-2 border-slate-400 rounded-md px-1 w-full;
   @apply mb-3;
@@ -64,12 +60,4 @@ table.basic td:first-child {
   overflow: hidden; /* Hide any content that overflows */
   white-space: nowrap; /* Prevent text from wrapping */
   text-overflow: ellipsis; /* Add ellipsis for long text */
-}
-
-.table-edit-link{
-  background-color: rgb(146, 212, 59);
-}
-
-.table-delete-link{
-  @apply text-white text-sm py-1 px-2 rounded-md flex gap-1 mr-1 bg-red-600;
 }
