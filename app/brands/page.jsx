@@ -47,6 +47,14 @@ const page = () => {
     const userEmail = session?.user?.email
 
     await axios.post('/api/brands', { userEmail, brandName, parentCategory })
+
+    // Fetch the updated list of brands after saving
+    const response = await axios.get('/api/brands')
+    setBrands(response.data.brands)
+
+    // Clear the input fields
+    setBrandName('')
+    setParentCategory('')
   }
 
   return (

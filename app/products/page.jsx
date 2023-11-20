@@ -34,7 +34,15 @@ export default function Products() {
           products.length > 0 
             ? (
                 <>
-                  <Link href={'/products/new'} className="btn-default py-1 px-2">Add new product</Link>
+                  <Link 
+                    href={'/products/new'} 
+                    className="btn-default py-1 px-2 text-white flex gap-1 w-52 whitespace-no-wrap"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Add new product
+                  </Link>
                   <table className="basic mt-5">
                     <thead>
                       <tr className="text-center">  

@@ -198,7 +198,7 @@ function Categories({ swal }) {
       {!editedCategoryInfo && (
         <table className="basic mt-4">
           <thead>
-            <tr>
+            <tr className="text-center">
               <td>Category Name</td>
               <td>Actions</td>
             </tr>
@@ -215,10 +215,10 @@ function Categories({ swal }) {
                   ? (categories.map(category => (
                       <tr 
                         key={category._id}
-                        className="border-t border-gray-300"
+                        className="border-t border-gray-300 text-center"
                       >
                         <td>{category.name}</td>
-                        <td className="flex gap-2">
+                        <td className="flex gap-2 justify-center">
                           <button 
                             onClick={() => editCategory(category)} 
                             className="flex gap-1 items-center btn-primary mr-1"
