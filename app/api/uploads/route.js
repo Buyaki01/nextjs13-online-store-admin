@@ -18,12 +18,12 @@ export async function POST(request) {
 
     const timestamp = Date.now()
 
-    const newFileName = `${timestamp}${file.name}}`
+    const newFileName = `${timestamp}${file.name}`
 
     const imagePath = join('public', 'images', newFileName)
 
     try {
-      await writeFile(imagePath, buffer) //Access the image on the browser using: http://localhost:3000/images/${file.name}
+      await writeFile(imagePath, buffer)
       uploadedImagePaths.push(`/images/${newFileName}`)
     } catch (error) {
       console.error('Error saving the uploaded file:', error)
