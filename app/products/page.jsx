@@ -5,17 +5,26 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Nav from "../components/Nav"
 import SearchInput from "../components/SearchInput"
+import { useSearchParams } from "next/navigation"
+import PaginationControls from "../components/PaginationControls"
 
 export default function Products() {
   
   const [products, setProducts] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+
+  const pageParams = useSearchParams()
+ 
+  const current_page = pageParams.get('page') || 1
+  const limit = pageParams.get('limit') || 5
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products')
+        const response = await axios.get(`/api/products?page=${current_page}&limit=${limit}`)
         setProducts(response.data.products)
+        setTotalCount(response.data.totalCount)
         setLoading(false)
       } catch (error) {
         console.error("Error fetching products:", error)
@@ -24,8 +33,8 @@ export default function Products() {
 
     fetchProducts()
   
-  }, [])
-      
+  }, [current_page, limit])
+
   return (
     <div className="min-h-screen flex">
       <Nav />
@@ -51,10 +60,11 @@ export default function Products() {
                         Add new product
                       </Link>
                     </div>
-                    <table className="basic mt-5">
+                    <table className="basic my-5">
                       <thead>
                         <tr className="text-center">  
                           <td className="px-4 py-2 whitespace-nowrap">Product Name</td>
+                          <td className="px-4 py-2 whitespace-nowrap">Category</td>
                           <td className="px-4 py-2 whitespace-nowrap">Actions</td>
                         </tr>
                       </thead>
@@ -66,6 +76,7 @@ export default function Products() {
                               className="border-t border-gray-300 text-center"
                             >
                               <td className="px-4 py-2 whitespace-no-wrap">{product.productName}</td>
+                              <td className="px-4 py-2 whitespace-no-wrap">{product.selectedCategory.name}</td>
                               <td className="flex gap-2 px-4 py-2 whitespace-no-wrap justify-center">
                                 <Link 
                                   className="flex items-center gap-1 px-4 py-1 text-white rounded-md bg-custom-green" 
@@ -91,6 +102,7 @@ export default function Products() {
                         }
                       </tbody>
                     </table>
+                    <PaginationControls products={products} totalCount={totalCount}/>
                   </>
                 ) 
               : (

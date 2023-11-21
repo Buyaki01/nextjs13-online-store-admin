@@ -21,10 +21,15 @@ export async function POST(request) {
   return NextResponse.json({ message: "Product Created" }, { status: 201 })
 }
 
-export async function GET() {
+export async function GET(request) {
   await connectMongoDB()
 
-  const products = await Product.find().populate('selectedCategory')
+  const { searchParams } = new URL(request.url)
+  const page = parseInt(searchParams.get('page')) || 1
+  const limit = parseInt(searchParams.get('limit')) || 5
+  const skip = (page - 1) * limit
+  const products = await Product.find().populate('selectedCategory').limit(limit).skip(skip)
+  const totalCount = await Product.countDocuments()
 
-  return NextResponse.json({ products })
+  return NextResponse.json({ products, totalCount })
 }
