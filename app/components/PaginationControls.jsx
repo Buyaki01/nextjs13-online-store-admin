@@ -2,37 +2,41 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 
-const PaginationControls = ({ hasNextPage, hasPrevPage}) => {
+const PaginationControls = ({ products, totalCount }) => {
   const router = useRouter()
   const pageParams = useSearchParams()
+  const currentPage = parseInt(pageParams.get('page')) || 1
+  const limit = parseInt(pageParams.get('limit')) || 5
+  const maxPage = Math.ceil(totalCount / limit)
 
-  const page = pageParams.get('page') ?? '1'
-  const per_page = pageParams.get('per_page') ?? '5'
+  const handlePrevPage = () => {
+    const newPage = Math.max(1, parseInt(currentPage, 10) - 1)
+    router.push(`/products?page=${newPage}&limit=${limit}`)
+  }
+
+  const handleNextPage = () => {
+    const newPage = parseInt(currentPage, 10) + 1
+    router.push(`/products?page=${newPage}&limit=${limit}`)
+  }
 
   return (
-    <div className="text-center">
+    <div className="flex gap-2 justify-center">
       <button
-        className="bg-custom-pink text-white p-1"
-        disabled={!hasPrevPage}
-        onClick={() => {
-          //router.push(`/?page=${Number(page) - 1}&per_page=${per_page}`)
-          router.push(`/products/page?page=${Number(page) -1}&per_page=${per_page}`)
-        }}
+        className="bg-slate-500 text-white px-2 py-1 rounded-md"
+        onClick={handlePrevPage}
+        disabled={currentPage <= 1}
       >
         prev page
       </button>
 
-      <div>
-        {page} / {Math.ceil( 10 / Number(per_page))}
+      <div className="flex items-center">
+        <p>{currentPage} / {maxPage} </p>
       </div>
 
       <button
-        className="bg-custom-pink text-white p-1"
-        disabled={!hasNextPage}
-        onClick={() => {
-          //router.push(`/?page=${Number(page) - 1}&per_page=${per_page}`)
-          router.push(`/products/page?page=${Number(page) -1}&per_page=${per_page}`)
-        }}
+        className="bg-slate-500 text-white px-2 py-1 rounded-md"
+        onClick={handleNextPage}
+        disabled={currentPage >= maxPage}
       >
         next page
       </button>

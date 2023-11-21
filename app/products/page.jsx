@@ -11,15 +11,20 @@ import PaginationControls from "../components/PaginationControls"
 export default function Products() {
   
   const [products, setProducts] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   const pageParams = useSearchParams()
+ 
+  const current_page = pageParams.get('page') || 1
+  const limit = pageParams.get('limit') || 5
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products')
+        const response = await axios.get(`/api/products?page=${current_page}&limit=${limit}`)
         setProducts(response.data.products)
+        setTotalCount(response.data.totalCount)
         setLoading(false)
       } catch (error) {
         console.error("Error fetching products:", error)
@@ -28,19 +33,8 @@ export default function Products() {
 
     fetchProducts()
   
-  }, [])
+  }, [current_page, limit])
 
-  const pageQuery = pageParams['page'] ??  '1'
-  console.log("This is the page query: ", pageQuery)
-
-  const per_page = pageParams['per_page'] ?? '5'
-
-  const start = (Number(pageQuery) - 1) * Number(per_page)
-  const end = start + Number(per_page)
-
-  const productEntries = products.slice(start, end)
-  console.log("This are the Products entries: ", productEntries)
-      
   return (
     <div className="min-h-screen flex">
       <Nav />
@@ -76,7 +70,7 @@ export default function Products() {
                       </thead>
                       <tbody>
                         {
-                          productEntries.map((product, index) => (
+                          products.map((product, index) => (
                             <tr 
                               key={index}
                               className="border-t border-gray-300 text-center"
@@ -108,7 +102,7 @@ export default function Products() {
                         }
                       </tbody>
                     </table>
-                    <PaginationControls hasNextPage={end < products.length} hasPrevPage={start > 0} />
+                    <PaginationControls products={products} totalCount={totalCount}/>
                   </>
                 ) 
               : (
