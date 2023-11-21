@@ -114,9 +114,9 @@ const page = () => {
                               key={brand.brandId}
                               className="border-t border-gray-300"
                             >
-                              <td className="px-4 py-2 whitespace-no-wrap">{brand.brandName}</td>
-                              <td className="px-4 py-2 whitespace-no-wrap">{brand.parentCategory.name}</td>
-                              <td className="flex gap-2 justify-center px-4 py-2 whitespace-no-wrap">
+                              <td className="px-4 py-2 whitespace-nowrap">{brand.brandName}</td>
+                              <td className="px-4 py-2 whitespace-nowrap">{brand.parentCategory.name}</td>
+                              <td className="flex gap-2 justify-center px-4 py-2 whitespace-nowrap">
                                 <Link 
                                   href={`/brands/edit/${brand._id}`} 
                                   className="flex gap-1 items-center rounded-md px-3 py-1 text-lg text-white bg-custom-green mr-2"

@@ -14,6 +14,7 @@ module.exports = {
       },
       backgroundColor: {
         'custom-green': 'rgb(146, 212, 59)',
+        'custom-pink': '#d40d9a',
       },
     },
   },
