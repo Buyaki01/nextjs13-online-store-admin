@@ -76,7 +76,7 @@ export default function Products() {
                       </thead>
                       <tbody>
                         {
-                          products.map((product, index) => (
+                          productEntries.map((product, index) => (
                             <tr 
                               key={index}
                               className="border-t border-gray-300 text-center"
@@ -108,7 +108,7 @@ export default function Products() {
                         }
                       </tbody>
                     </table>
-                    <PaginationControls />
+                    <PaginationControls hasNextPage={end < products.length} hasPrevPage={start > 0} />
                   </>
                 ) 
               : (

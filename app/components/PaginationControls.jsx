@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 
-const PaginationControls = () => {
+const PaginationControls = ({ hasNextPage, hasPrevPage}) => {
   const router = useRouter()
   const pageParams = useSearchParams()
 
@@ -13,7 +13,7 @@ const PaginationControls = () => {
     <div className="text-center">
       <button
         className="bg-custom-pink text-white p-1"
-        //disabled={!hasPrevPage}
+        disabled={!hasPrevPage}
         onClick={() => {
           //router.push(`/?page=${Number(page) - 1}&per_page=${per_page}`)
           router.push(`/products/page?page=${Number(page) -1}&per_page=${per_page}`)
@@ -28,7 +28,7 @@ const PaginationControls = () => {
 
       <button
         className="bg-custom-pink text-white p-1"
-        //disabled={!hasPrevPage}
+        disabled={!hasNextPage}
         onClick={() => {
           //router.push(`/?page=${Number(page) - 1}&per_page=${per_page}`)
           router.push(`/products/page?page=${Number(page) -1}&per_page=${per_page}`)
