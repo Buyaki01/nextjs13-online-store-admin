@@ -5,11 +5,15 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Nav from "../components/Nav"
 import SearchInput from "../components/SearchInput"
+import { useSearchParams } from "next/navigation"
+import PaginationControls from "../components/PaginationControls"
 
 export default function Products() {
   
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const pageParams = useSearchParams()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,6 +29,17 @@ export default function Products() {
     fetchProducts()
   
   }, [])
+
+  const pageQuery = pageParams['page'] ??  '1'
+  console.log("This is the page query: ", pageQuery)
+
+  const per_page = pageParams['per_page'] ?? '5'
+
+  const start = (Number(pageQuery) - 1) * Number(per_page)
+  const end = start + Number(per_page)
+
+  const productEntries = products.slice(start, end)
+  console.log("This are the Products entries: ", productEntries)
       
   return (
     <div className="min-h-screen flex">
@@ -51,10 +66,11 @@ export default function Products() {
                         Add new product
                       </Link>
                     </div>
-                    <table className="basic mt-5">
+                    <table className="basic my-5">
                       <thead>
                         <tr className="text-center">  
                           <td className="px-4 py-2 whitespace-nowrap">Product Name</td>
+                          <td className="px-4 py-2 whitespace-nowrap">Category</td>
                           <td className="px-4 py-2 whitespace-nowrap">Actions</td>
                         </tr>
                       </thead>
@@ -66,6 +82,7 @@ export default function Products() {
                               className="border-t border-gray-300 text-center"
                             >
                               <td className="px-4 py-2 whitespace-no-wrap">{product.productName}</td>
+                              <td className="px-4 py-2 whitespace-no-wrap">{product.selectedCategory.name}</td>
                               <td className="flex gap-2 px-4 py-2 whitespace-no-wrap justify-center">
                                 <Link 
                                   className="flex items-center gap-1 px-4 py-1 text-white rounded-md bg-custom-green" 
@@ -91,6 +108,7 @@ export default function Products() {
                         }
                       </tbody>
                     </table>
+                    <PaginationControls />
                   </>
                 ) 
               : (
