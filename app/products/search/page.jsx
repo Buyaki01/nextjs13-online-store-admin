@@ -45,6 +45,7 @@ const SearchProductsPage = () => {
                         <img 
                           src={product.uploadedImagePaths[0]} 
                           alt={product.productName}
+                          className="w-full h-40 object-cover"
                         />
                       </div>
 
