@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from '../../../lib/mongoose'
 import User from "../../../models/user"
-import Product from "../../../models/Product"
+import Product from "../../../models/product"
 
 export async function POST(request) {
   const { userEmail, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, stockQuantity, isFeatured } = await request.json()
