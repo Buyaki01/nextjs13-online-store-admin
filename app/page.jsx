@@ -1,17 +1,47 @@
 'use client'
 
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
+import { FaGoogle } from "react-icons/fa"
 import Nav from "./components/Nav"
+import Dashboard from "./components/Dashboard"
 
 export default function Home() {
   const { data: session } = useSession()
 
   if (!session) {
     return (
-      <div className="flex items-center w-screen h-screen">
-        <div className="text-center w-full">
-          <button onClick={() => signIn('google')} className=" text-white bg-slate-700 p-2 rounded-lg">Login with Google</button>
+      <div className="flex items-center justify-center min-h-fit h-full">
+        <div className="
+          max-w-[600px]
+          w-full
+          flex
+          flex-col
+          gap-6
+          items-center
+          shadow-xl
+          shadow-slate-200
+          rounded-md
+          my-8
+          p-4
+          md:p-8
+        ">
+          <h2 className="text-3xl font-bold mb-4">Welcome to Pearls Collections</h2>
+          <button 
+            onClick={() => signIn('google')} 
+            className="flex items-center gap-2 bg-custom-pink text-white px-4 py-2 rounded-md hover:bg-custom-pink-hover focus:outline-none focus:ring focus:border-custom-pink"
+          >
+            <FaGoogle size={24} />
+            Login with Google
+          </button>
         </div>
+      </div>
+    )
+  }
+
+  if (session.user.role !== "admin") {
+    return (
+      <div className="flex items-center justify-center min-h-fit h-full">
+        <p>You do not have permission to access this page.</p>
       </div>
     )
   }
@@ -20,18 +50,7 @@ export default function Home() {
     <div className="admin-panel-container min-h-screen flex">
       <Nav />
       <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-4">
-
-        <div className="text-lime-900 flex justify-between">
-          <h2> Hello, <b>{session?.user?.name}</b> </h2>
-
-          <div className="flex bg-slate-300 gap-1 rounded-lg overflow-hidden">
-            <img src={session?.user?.image} alt="" className="w-6 h-6" />
-            <span className="px-2">
-              {session?.user?.name}
-            </span>
-          </div>
-        </div>
-
+        <Dashboard />
       </div>
     </div>
   )

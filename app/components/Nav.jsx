@@ -11,11 +11,12 @@ export default function Nav({children}) {
 
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
 
   const logout = async () => {
-    await router()
-    await signOut()
+    await signOut({ redirect: false })
+
+    router.push('/')
   }
 
   return (
