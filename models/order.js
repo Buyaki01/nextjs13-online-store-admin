@@ -6,7 +6,6 @@ const OrderSchema = new Schema({
     ref: "User",
     required: true
   },
-  // customerId: { type: String }, //It's from Stripe and is different from the user Id
   paymentIntentId: { type: String },
   products: [{
     id: { type: String },
@@ -15,9 +14,15 @@ const OrderSchema = new Schema({
     regularPrice: { type: Number },
     productPrice: { type: Number },
     images: [{ type: String }],
-    selectedCategory: { type: mongoose.Schema.Types.ObjectId },
+    selectedCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
     quantityInStock: { type: Number },
-    brand: { type: mongoose.Types.ObjectId },
+    brand: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
+    },
     properties: {type:Object},
     isFeatured: { type: Boolean },
     cartQuantity: { type: Number },
@@ -29,11 +34,14 @@ const OrderSchema = new Schema({
   postalCode: { type: String, required: true },
   streetAddress: { type: String, required: true },
   country: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
 }, {
   timestamps: true,
 }
 )
 
-const Order = models.Order || model('Order', OrderSchema)
+const Order = models?.Order || model('Order', OrderSchema)
 
 export default Order

@@ -65,6 +65,7 @@ export default function Products() {
                         <tr className="text-center">  
                           <td className="px-4 py-2 whitespace-nowrap">Product Name</td>
                           <td className="px-4 py-2 whitespace-nowrap">Category</td>
+                          <td className="px-4 py-2 whitespace-nowrap">Brand</td>
                           <td className="px-4 py-2 whitespace-nowrap">Actions</td>
                         </tr>
                       </thead>
@@ -77,6 +78,7 @@ export default function Products() {
                             >
                               <td className="px-4 py-2 whitespace-no-wrap">{product.productName}</td>
                               <td className="px-4 py-2 whitespace-no-wrap">{product.selectedCategory.name}</td>
+                              <td className="px-4 py-2 whitespace-no-wrap">{product.brand.brandName}</td>
                               <td className="flex gap-2 px-4 py-2 whitespace-no-wrap justify-center">
                                 <Link 
                                   className="flex items-center gap-1 px-4 py-1 text-white rounded-md bg-custom-green" 

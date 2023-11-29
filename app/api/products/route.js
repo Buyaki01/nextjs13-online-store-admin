@@ -28,7 +28,7 @@ export async function GET(request) {
   const page = parseInt(searchParams.get('page')) || 1
   const limit = parseInt(searchParams.get('limit')) || 5
   const skip = (page - 1) * limit
-  const products = await Product.find().populate('selectedCategory').limit(limit).skip(skip)
+  const products = await Product.find().populate('selectedCategory').populate('brand').limit(limit).skip(skip)
   const totalCount = await Product.countDocuments()
 
   return NextResponse.json({ products, totalCount })
