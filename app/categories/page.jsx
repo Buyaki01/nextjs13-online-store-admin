@@ -247,6 +247,7 @@ function Categories({ swal }) {
                 onClick={() => {
                   setEditedCategoryInfo(null)
                   setName('')
+                  setUploadedCategoryImagePath([])
                   setProperties([])
                 }}
                 className="btn-primary"
