@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connectMongoDB from "../../../../lib/mongoose"
-import Product from "../../../../models/Product"
+import Product from "../../../../models/product"
 import User from "../../../../models/user"
 
 export async function GET(request, { params }) {

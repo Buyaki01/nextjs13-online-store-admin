@@ -4,6 +4,7 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { withSwal } from 'react-sweetalert2'
 import Nav from "../components/Nav"
+import Spinner from "../../app/components/Spinner"
 
 function Categories({ swal }) {
   const [editedCategoryInfo, setEditedCategoryInfo] = useState(null)
@@ -11,6 +12,8 @@ function Categories({ swal }) {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [properties, setProperties] = useState([])
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadedCategoryImagePath, setUploadedCategoryImagePath] = useState([])
 
   useEffect(() => {
     fetchCategories()
@@ -30,6 +33,7 @@ function Categories({ swal }) {
     e.preventDefault()
     const data = { 
       name,
+      uploadedCategoryImagePath,
       properties: properties.map(property => ({
         name: property.name,
         values: property.values.split(','),
@@ -44,14 +48,39 @@ function Categories({ swal }) {
     }
 
     setName('')
+    setUploadedCategoryImagePath([])
     setProperties([])
 
     fetchCategories()
   }
 
+  const uploadCategoryPhoto = async (e) => { //Saves the uploaded images directly to the computer/ AWS S3 Bucket / Cloud storage, whatever you would have stated in the server
+    const files = e.target?.files
+
+    try {
+      if (files?.length > 0) {
+        setIsUploading(true)
+
+        const data = new FormData()
+  
+        for (const file of files) {
+          data.append('uploads', file)
+        }
+  
+        const response = await axios.post('/api/uploads', data)
+        setUploadedCategoryImagePath(response.data.uploadedImagePaths) //The uploadedImagePaths in response.data.uploadedImagePaths is coming from the server side
+        
+        setIsUploading(false)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   async function editCategory(category) {
     setEditedCategoryInfo(category)
     setName(category.name)
+    setUploadedCategoryImagePath(category.categoryImage)
     setProperties(category.properties.map(({ name, values }) => ({ 
       name,
       values: values.join(',')
@@ -137,6 +166,39 @@ function Categories({ swal }) {
               value={name}
               onChange={e => setName(e.target.value)}
             /> 
+          </div>
+          
+          <label>Category Photo</label>
+          <div className="mb-3 flex flex-wrap gap-1">
+            {!!uploadedCategoryImagePath?.length > 0 && 
+              (
+                <div key={uploadedCategoryImagePath} className="h-24">
+                  <img 
+                    src={
+                      editedCategoryInfo
+                        ? editedCategoryInfo.categoryImage[0]
+                        : uploadedCategoryImagePath
+                    }
+                    alt="" 
+                    className="rounded-lg" 
+                  />
+                </div>
+              )
+            }
+
+            {isUploading && (
+              <div className="h-24 flex items-center"> 
+                <Spinner />
+              </div>
+            )}
+
+            <label className="cursor-pointer w-24 h-24 border mt-2 flex items-center justify-center text-sm gap-1 text-slate-900 rounded-lg bg-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              <div>Upload</div>
+              <input type="file" onChange={uploadCategoryPhoto} className="hidden" />
+            </label>
           </div>
 
           <div className="mb-2">
