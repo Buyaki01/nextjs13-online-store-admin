@@ -7,6 +7,7 @@ import Spinner from "../../components/Spinner"
 import { ReactSortable } from "react-sortablejs"
 import { useSession } from "next-auth/react"
 import Nav from "../../components/Nav"
+import toast from "react-hot-toast"
 
 export default function NewProduct() {
 
@@ -55,12 +56,61 @@ export default function NewProduct() {
     e.preventDefault()
 
     const userEmail = session?.user?.email
+    console.log("This is the userEmail client side: ", userEmail)
 
-    const data = { userEmail, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, stockQuantity, isFeatured } // Sending selectedCategory as an id for Category because our value for option is category._id
+    const data = { 
+      userEmail, 
+      productName, 
+      description, 
+      regularPrice, 
+      productPrice, 
+      uploadedImagePaths, 
+      selectedCategory, 
+      properties, 
+      selectedBrand,
+      stockQuantity, 
+      isFeatured 
+    } // Sending selectedCategory as an id for Category because our value for option is category._id
 
-    await axios.post('/api/products', data)
+    if (!userEmail || 
+      !productName || 
+      !description || 
+      !regularPrice || 
+      !productPrice || 
+      !uploadedImagePaths || 
+      !selectedCategory || 
+      !properties ||
+      !selectedBrand ||
+      !stockQuantity
+    ) {
+      toast.error('Please fill in all required fields')
+      return // Don't proceed with the request if fields are missing
+    }
 
-    router.push("/products")
+    try {
+      const response = await axios.post('/api/products', data)
+      console.log("This is the response data for POST product: ", response)
+      if(response.status === 201) {
+        toast.success('Product created successfully')
+      }
+      if(response.status === 404) {
+        toast.error('User not found. Please login')
+      }
+      router.push('/products')
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 404) {
+          toast.error('User not found. Please login')
+        } else {
+          toast.error(`Error: ${error.response.data.message}`)
+        }
+      } else if (error.request) {
+        toast.error('No response received from the server')
+      } else {
+        toast.error(`Error creating product: ${error.message}`)
+      }
+      console.error('Error creating product:', error)
+    }
   }
 
   const uploadPhotos = async (e) => { //Saves the uploaded images directly to the computer/ AWS S3 Bucket / Cloud storage, whatever you would have stated in the server

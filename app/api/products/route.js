@@ -4,21 +4,47 @@ import User from "../../../models/user"
 import Product from "../../../models/product"
 
 export async function POST(request) {
-  const { userEmail, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, properties, selectedBrand, stockQuantity, isFeatured } = await request.json()
+  const { 
+    userEmail, 
+    productName, 
+    description, 
+    regularPrice, 
+    productPrice, 
+    uploadedImagePaths, 
+    selectedCategory, 
+    properties, 
+    selectedBrand, 
+    stockQuantity, 
+    isFeatured 
+  } = await request.json()
+
+  if (!userEmail || 
+    !productName || 
+    !description || 
+    !regularPrice || 
+    !productPrice || 
+    !uploadedImagePaths || 
+    !selectedCategory || 
+    !properties ||
+    !selectedBrand ||
+    !stockQuantity
+  ) {
+    return NextResponse.json({ message: "Missing fields" }, { status: 400 })
+  }
 
   await connectMongoDB()
 
   const user = await User.findOne({ email: userEmail })
 
   if (!user) {
-    return NextResponse.json({ message: "User not found" }, { status: 404 })
+    return NextResponse.json({ message: "User not found. Please login" }, { status: 404 })
   }
 
   const userId = user._id
 
   await Product.create({ user: userId, productName, description, regularPrice, productPrice, uploadedImagePaths, selectedCategory, brand: selectedBrand, quantityInStock: stockQuantity,properties, isFeatured })
 
-  return NextResponse.json({ message: "Product Created" }, { status: 201 })
+  return NextResponse.json({ message: "Product Created successfully" }, { status: 201 })
 }
 
 export async function GET(request) {
