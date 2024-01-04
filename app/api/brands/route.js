@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import connectMongoDB from "../../../lib/mongoose"
 import Brand from "../../../models/brand"
 import User from "../../../models/user"
+import Category from "../../../models/category"
 
 export async function POST(request) {
   const { userEmail, brandName, parentCategory } = await request.json()
@@ -23,6 +24,7 @@ export async function POST(request) {
 
 export async function GET() {
   await connectMongoDB()
+  await Category.find()
   
   const brands = await Brand.find().populate('parentCategory')
 

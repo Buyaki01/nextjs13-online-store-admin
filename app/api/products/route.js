@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import connectMongoDB from '../../../lib/mongoose'
 import User from "../../../models/user"
 import Product from "../../../models/product"
+import Category from "../../../models/category"
+import Brand from "../../../models/brand"
 
 export async function POST(request) {
   const { 
@@ -49,6 +51,9 @@ export async function POST(request) {
 
 export async function GET(request) {
   await connectMongoDB()
+
+  await Category.find()
+  await Brand.find().populate('parentCategory')
 
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page')) || 1
