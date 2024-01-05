@@ -6,19 +6,19 @@ import Order from "../../../../models/order"
 export async function GET() {
   await connectMongoDB()
 
-  const previousMonth = moment()
-    .month(moment()
-    .month() - 1)
-    .set("date", 1)//Starts to count from Day 1 of that month
+  const lastSevenDays = moment()
+    .day(moment()
+    .day() - 7)
     .format("YYYY-MM-DD HH:mm:ss")
 
   try {
     const income = await Order.aggregate([
       {
-        $match: {createdAt: {$gte: new Date(previousMonth)}}
+        $match: {createdAt: {$gte: new Date(lastSevenDays)}}
       },
       {
         $project: {
+          day: { $dayOfWeek: "$createdAt" },
           month: { $month: "$createdAt" },
           year: { $year: "$createdAt" },
           sales: "$totalPrice" //totalPrice is from the Order model, table
@@ -26,7 +26,7 @@ export async function GET() {
       },
       {
         $group:{
-          _id: { month: "$month", year: "$year" },
+          _id: { day: "$day", month: "$month", year: "$year" },
           total: { $sum: "$sales" }
         }
       },
