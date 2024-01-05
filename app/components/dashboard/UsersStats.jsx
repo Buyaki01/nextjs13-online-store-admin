@@ -21,13 +21,13 @@ export const UsersStats = () => {
   }, [])
 
   return (
-    <div className="flex gap-3">
-      <div><FaUsers className="text-lg text-custom-green"/></div>
+    <div className="flex gap-5 border shadow-lg p-5 shadow-secondary">
+      <div><FaUsers className="text-xl text-secondary"/></div>
       <div>
         {users[0]?.total} 
         <div>users</div>
       </div>
-      <div>{usersPercentage}</div>
+      <div>{usersPercentage}%</div>
     </div>
   )
 }

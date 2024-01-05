@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react"
 import { UsersStats } from "./UsersStats"
+import { OrdersStats } from "./OrdersStats"
 
 const Dashboard = () => {
 
@@ -21,8 +22,9 @@ const Dashboard = () => {
           </span>
         </div>
       </div>
-      <div>
+      <div className="flex gap-8">
         <UsersStats />
+        <OrdersStats />
       </div>
     </div>  
   )
