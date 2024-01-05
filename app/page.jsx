@@ -3,7 +3,7 @@
 import { useSession, signIn } from "next-auth/react"
 import { FaGoogle } from "react-icons/fa"
 import Nav from "./components/Nav"
-import Dashboard from "./components/Dashboard"
+import Dashboard from "./components/dashboard/Dashboard"
 
 export default function Home() {
   const { data: session } = useSession()
