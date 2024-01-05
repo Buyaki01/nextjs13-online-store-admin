@@ -3,7 +3,8 @@
 import { useSession } from "next-auth/react"
 import { UsersStats } from "./UsersStats"
 import { OrdersStats } from "./OrdersStats"
-import { EarningsStats } from "./EarningsStats"
+import { EarningsStats } from "./MonthlyEarningsStats"
+import { WeekSalesChart } from "./WeeklyEarningsChart"
 
 const Dashboard = () => {
 
@@ -23,10 +24,13 @@ const Dashboard = () => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
         <UsersStats />
         <OrdersStats />
         <EarningsStats />
+      </div>
+      <div className="mt-10">
+        <WeekSalesChart />
       </div>
     </div>  
   )
