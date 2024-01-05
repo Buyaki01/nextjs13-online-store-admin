@@ -33,6 +33,15 @@ label{
   background-color: rgb(146, 212, 59);
 }
 
+.styledChart{
+  width: 100%;
+  height: 300px;
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 2px solid rgb(146, 212, 59);
+  border-radius: 5px;
+}
+
 .delete-product{
   color: rgb(146, 212, 59);
 }

@@ -9,7 +9,7 @@ export async function GET() {
   const previousMonth = moment()
     .month(moment()
     .month() - 1)
-    .set("date", 1)
+    .set("date", 1)//Starts to count from Day 1 of that month
     .format("YYYY-MM-DD HH:mm:ss")
 
   try {
