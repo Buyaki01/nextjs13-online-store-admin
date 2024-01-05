@@ -4,56 +4,70 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 export const WeekSalesChart = () => {
   const [sales, setSales] = useState([])
-  const [Loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchWeeklySales = async () => {
+      setLoading(true)
       try {
         const response = await axios.get('/api/orders/weekly-sales')
-        setIncome(response.data.income)
-        setIncomePercentage(((response.data.income[0].total - response.data.income[1].total) / response.data.income[1].total) * 100) //This month minus previous month divide by previous month multiplied by 100
+        const newData = response.data.income.map((item) => {
+          const DAYS = [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thur",
+            "Fri",
+            "Sat"
+          ]
+
+          return {
+            day: DAYS[item._id.day - 1],
+            amount: item.total
+          }
+        })
+
+        setSales(newData)
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching income:", error)
+        setLoading(false)
       }
     }
 
     fetchWeeklySales()
   }, [])
 
-  const data = [
-    {
-      day: 'Mon',
-      amount: 4000,
-    },
-    {
-      day: 'Tue',
-      amount: 3000,
-    },
-  ];
-
   return (
-    <div className="styledChart">
-      <h1 className='mb-3'>Last 7 Days Earnings (US $)</h1>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="amount" stroke="#8884d8" activeDot={{ r: 8 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <>
+      {loading 
+        ? <p className='mt-14 text-center text-lg'>Loading Chart...</p>
+        : 
+          <div className="styledChart">
+            <h1 className='mb-3'>Last 7 Days Earnings (US $)</h1>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                width={500}
+                height={300}
+                data={sales}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="amount" stroke="#8884d8" activeDot={{ r: 8 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+      }
+    </>
   )
 }
