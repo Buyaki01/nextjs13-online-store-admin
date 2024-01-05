@@ -12,5 +12,32 @@ export async function GET() {
     .set("date", 1)
     .format("YYYY-MM-DD HH:mm:ss")
 
-  return NextResponse.json({ previousMonth })
+  try {
+    const users = await User.aggregate([
+      {
+        $match: {createdAt: {$gte: new Date(previousMonth)}}
+      },
+      {
+        $project: {
+          month: {$month: "$createdAt"}
+        }
+      },
+      {
+        $group:{ //froup will return an array with _id and total
+          _id: "$month", //The id will be in terms of the month
+          total: {$sum: 1}
+        }
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+    ])
+
+    return NextResponse.json({ users })
+  } catch (error) {
+    console.error('Error :', error)
+    return NextResponse.json({ error: "Failed to save the uploaded file" })
+  }
 }
