@@ -19,25 +19,27 @@ export async function GET() {
       },
       {
         $project: {
-          month: {$month: "$createdAt"}
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" }
         }
       },
       {
-        $group:{ //froup will return an array with _id and total
-          _id: "$month", //The id will be in terms of the month
+        $group:{
+          _id: { month: "$month", year: "$year" },
           total: {$sum: 1}
         }
       },
       {
         $sort: {
-          _id: -1,
-        },
+          "_id.year": -1,
+          "_id.month": -1
+        }
       },
     ])
 
     return NextResponse.json({ users })
   } catch (error) {
     console.error('Error :', error)
-    return NextResponse.json({ error: "Failed to save the uploaded file" })
+    return NextResponse.json({ error: "Failed to get users" })
   }
 }

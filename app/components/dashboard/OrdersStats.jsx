@@ -21,7 +21,7 @@ export const OrdersStats = () => {
   }, [])
 
   return (
-    <div className="flex gap-5 border shadow-lg p-5 shadow-secondary">
+    <div className="flex gap-5 border shadow-lg p-5 shadow-secondary justify-center">
       <div><FaClipboard className="text-xl text-secondary"/></div>
       <div>
         {orders[0]?.total} 
