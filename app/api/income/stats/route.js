@@ -13,20 +13,21 @@ export async function GET() {
     .format("YYYY-MM-DD HH:mm:ss")
 
   try {
-    const orders = await Order.aggregate([
+    const income = await Order.aggregate([
       {
         $match: {createdAt: {$gte: new Date(previousMonth)}}
       },
       {
         $project: {
           month: { $month: "$createdAt" },
-          year: { $year: "$createdAt" }
+          year: { $year: "$createdAt" },
+          sales: "$totalPrice" //totalPrice is from the Order model, table
         }
       },
       {
         $group:{
           _id: { month: "$month", year: "$year" },
-          total: {$sum: 1}
+          total: { $sum: "$sales" }
         }
       },
       {
@@ -37,9 +38,9 @@ export async function GET() {
       },
     ])
 
-    return NextResponse.json({ orders })
+    return NextResponse.json({ income })
   } catch (error) {
     console.error('Error :', error)
-    return NextResponse.json({ error: "Failed to get orders" })
+    return NextResponse.json({ error: "Failed to get income" })
   }
 }

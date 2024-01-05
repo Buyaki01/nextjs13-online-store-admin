@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react"
 import { UsersStats } from "./UsersStats"
 import { OrdersStats } from "./OrdersStats"
+import { EarningsStats } from "./EarningsStats"
 
 const Dashboard = () => {
 
@@ -22,9 +23,10 @@ const Dashboard = () => {
           </span>
         </div>
       </div>
-      <div className="flex gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <UsersStats />
         <OrdersStats />
+        <EarningsStats />
       </div>
     </div>  
   )
