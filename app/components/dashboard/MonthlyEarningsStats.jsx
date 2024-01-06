@@ -9,7 +9,7 @@ export const EarningsStats = () => {
   useEffect(() => {
     const fetchIncome = async () => {
       try {
-        const response = await axios.get('/api/orders/monthly-sales')
+        const response = await axios.get('/api/orders/monthly-transactions')
         setIncome(response.data.income)
         setIncomePercentage(((response.data.income[0].total - response.data.income[1].total) / response.data.income[1].total) * 100) //This month minus previous month divide by previous month multiplied by 100
       } catch (error) {
