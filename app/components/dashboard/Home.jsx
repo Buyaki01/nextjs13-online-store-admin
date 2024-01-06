@@ -1,9 +1,10 @@
 'use client'
 
 import { useSession } from "next-auth/react"
-import { UsersStats } from "./UsersStats"
-import { OrdersStats } from "./OrdersStats"
+import { UsersStats } from "./MonthlyUsersStats"
+import { OrdersStats } from "./MonthlyOrdersStats"
 import { EarningsStats } from "./MonthlyEarningsStats"
+import { TodaysPerformance } from "./daily-reports/TodaysPerformance"
 import { WeekSalesChart } from "./WeeklyEarningsChart"
 
 const Dashboard = () => {
@@ -24,10 +25,16 @@ const Dashboard = () => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
-        <UsersStats />
-        <OrdersStats />
-        <EarningsStats />
+      <div>
+        <h1 className="font-bold">Monthly Performance Comparison</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
+          <UsersStats />
+          <OrdersStats />
+          <EarningsStats />
+        </div>
+      </div>
+      <div className="mt-10 mb-5">
+        <TodaysPerformance />
       </div>
       <div className="mt-10">
         <WeekSalesChart />

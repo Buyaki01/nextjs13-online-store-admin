@@ -10,7 +10,7 @@ export const WeekSalesChart = () => {
     const fetchWeeklySales = async () => {
       setLoading(true)
       try {
-        const response = await axios.get('/api/orders/weekly-sales')
+        const response = await axios.get('/api/orders/weekly-transactions')
         const newData = response.data.income.map((item) => {
           const DAYS = [
             "Sun",
@@ -45,7 +45,7 @@ export const WeekSalesChart = () => {
         ? <p className='mt-14 text-center text-lg'>Loading Chart...</p>
         : 
           <div className="styledChart">
-            <h1 className='mb-3'>Last 7 Days Earnings (US $)</h1>
+            <h1 className='mb-3 font-bold'>Last 7 Days Earnings (US $)</h1>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 width={500}
